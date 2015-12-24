@@ -1,0 +1,3 @@
+[submodule "wiki"]
+	path = wiki
+	url = git@gitserver:baasic/baasic-sdk-angularjs-files.wiki.git
