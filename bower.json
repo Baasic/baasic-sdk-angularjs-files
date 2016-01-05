@@ -1,0 +1,33 @@
+{
+  "name": "baasic-angularjs-files",
+  "version": "0.1.0",
+  "description": "Baasic AngularJS SDK files modules and services.",
+  "keywords": [
+    "angularjs",
+    "baasic",
+	"settings",
+    "backend"
+  ],
+  "license": "MIT",
+  "main": "dist/baasic-angularjs-files.js",
+  "ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests",
+        "src",
+        "spec",
+		"NuGet",
+		"lib",
+        "bower.json",
+        "gulpfile.js",
+        "package.json",
+        "README.md"
+    ],
+  "devDependencies": {
+  },
+  "dependencies": {
+	"baasic-angularjs-core": "baasic/baasic-sdk-angularjs-core"
+  }
+}
