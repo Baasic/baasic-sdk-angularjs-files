@@ -35,7 +35,26 @@
                 get: uriTemplateService.parse('media-vaults/{id}/{?embed,fields}'),                    
                 
                 streams: {
+                    /**
+                    * Parses get route; this route should be expanded with the path of the desired file stream.
+                    * @method streams.get
+                    * @example baasicMediaVaultRouteService.streams.get.expand({path: '<path>'});               
+                    **/ 			
+                    get: uriTemplateService.parse('media-vault-streams/{path}/'),
+
+                    /**
+                    * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
+                    * @method streams.create
+                    * @example baasicMediaVaultRouteService.streams.create.expand({path: '<path>'});               
+                    **/ 			
+                    create: uriTemplateService.parse('media-vault-streams/{path}/'),
                     
+                    /**
+                    * Parses create route; this route should be expanded with the path which indicates which stream should be updated.
+                    * @method streams.update
+                    * @example baasicMediaVaultRouteService.streams.update.expand({path: '<path>'});               
+                    **/ 			
+                    update: uriTemplateService.parse('media-vault-streams/{path}/')                       
                 }                      
             };
         }]);

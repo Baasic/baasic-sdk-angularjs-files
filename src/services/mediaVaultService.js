@@ -111,7 +111,88 @@ baasicMediaVaultService.update(mediaVaultEntry)
                 },
                                                                                             
                 streams: {
-                    
+                    /**
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource.
+                    * @method streams.get        
+                    * @example 
+baasicFilesService.stream.get('<path>')
+.success(function (data) {
+    // perform success action here
+})
+.error(function (response, status, headers, config) {
+    // perform error handling here
+});
+                    **/  	                    
+                    get: function(data) {
+                        if (!angular.isObject(data)){
+                            data = {
+                              path: data  
+                            };
+                        }                        
+                        baasicApiHttp.get(mediaVaultRouteService.streams.get.expand(data));                                          
+                    },
+
+                     /**
+                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one.
+                     * @method streams.update
+                     * @example 
+baasicFilesService.streams.update('<path>', <file-stream>)
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
+                    **/ 	                    
+                    update: function(data, stream) {
+                        if (!angular.isObject(data)){
+                            data = {
+                              path: data  
+                            };
+                        }
+                        var formData = new FormData();
+                        formData.append('file', stream);
+                        return baasicApiHttp({
+                            transformRequest: angular.identity,
+                            url:  mediaVaultRouteService.streams.update.expand(data),
+                            method: 'POST',
+                            data: formData,
+                            headers: {
+                                'Content-Type': undefined
+                            }
+                        });                       
+                    },
+
+                     /**
+                     * Returns a promise that is resolved once the create file stream action has been performed; this action will upload the specified file stream.
+                     * @method streams.create
+                     * @example 
+baasicFilesService.streams.update('<path>', <file-stream>)
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
+                    **/ 	                                         
+                    create: function(data, stream) {
+                        if (!angular.isObject(data)){
+                            data = {
+                              path: data  
+                            };
+                        }
+                        var formData = new FormData();
+                        formData.append('file', stream);
+                        return baasicApiHttp({
+                            transformRequest: angular.identity,
+                            url:  mediaVaultRouteService.streams.create.expand(data),
+                            method: 'POST',
+                            data: formData,
+                            headers: {
+                                'Content-Type': undefined
+                            }
+                        });                        
+                    }                    
                 }
             };       
         }]);
