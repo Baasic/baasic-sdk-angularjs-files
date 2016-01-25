@@ -48,7 +48,16 @@
                     * @example baasicMediaVaultRouteService.streams.update.expand({id: '<path>'});               
                     **/ 			
                     update: uriTemplateService.parse('media-vault-streams/{id}/')                       
-                }                      
+                },
+                
+                batch: {
+                    /**
+                    * Parses remove route; this must be expanded with a list of media vault identifiers which need to be removed.
+                    * @method batch.remove       
+                    * @example baasicMediaVaultRouteService.batch.remove.expand({entryIds: <entryIds>);              
+                    **/                      
+                    remove: uriTemplateService.parse('media-vault-streams/batch/{entryIds}'),                    
+                }                                    
             };
         }]);
 }(angular, module));

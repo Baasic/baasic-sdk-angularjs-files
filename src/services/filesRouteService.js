@@ -49,7 +49,16 @@
                     **/ 			
                     update: uriTemplateService.parse('file-streams/{id}/')               
                     
-                }                          
+                },
+
+                batch: {
+                    /**
+                    * Parses remove route; this must be expanded with a list of file identifiers which need to be removed.
+                    * @method batch.remove       
+                    * @example baasicFilesRouteService.batch.remove.expand({ids: <ids>);              
+                    **/                      
+                    remove: uriTemplateService.parse('file-streams/batch/{ids}'),                    
+                }                           
             };
         }]);
 }(angular, module));

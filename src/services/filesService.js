@@ -174,6 +174,25 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                             }
                         });                        
                     }
+                },
+                
+                batch: {
+                  /**
+                  * Returns a promise that is resolved once the remove action has been performed. This action will remove file stream resources from the system if successfully completed. 
+                  * @method batch.remove       
+                  * @example 			 
+  baasicFilesService.batch.remove(<fileStreamIds>)
+  .success(function (data) {
+    // perform success action here
+  })
+  .error(function (response, status, headers, config) {
+    // perform error handling here
+  });		
+                  **/		                  
+                  remove: function(ids) {
+                      var data = ids.join(',');
+                      return baasicApiHttp.delete(filesRouteService.batch.remove.expand({ids: data}));   
+                  }                    
                 }
             };       
         }]);

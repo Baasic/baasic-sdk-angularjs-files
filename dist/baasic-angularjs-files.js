@@ -76,6 +76,15 @@
                      **/
                     update: uriTemplateService.parse('file-streams/{id}/')
 
+                },
+
+                batch: {
+                    /**
+                     * Parses remove route; this must be expanded with a list of file identifiers which need to be removed.
+                     * @method batch.remove       
+                     * @example baasicFilesRouteService.batch.remove.expand({ids: <ids>);              
+                     **/
+                    remove: uriTemplateService.parse('file-streams/batch/{ids}'),
                 }
             };
         }]);
@@ -266,6 +275,27 @@
                             }
                         });
                     }
+                },
+
+                batch: {
+                    /**
+                     * Returns a promise that is resolved once the remove action has been performed. This action will remove file stream resources from the system if successfully completed. 
+                     * @method batch.remove       
+                     * @example 			 
+                     baasicFilesService.batch.remove(<fileStreamIds>)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });		
+                     **/
+                    remove: function (ids) {
+                        var data = ids.join(',');
+                        return baasicApiHttp.delete(filesRouteService.batch.remove.expand({
+                            ids: data
+                        }));
+                    }
                 }
             };
         }]);
@@ -330,6 +360,15 @@
                      * @example baasicMediaVaultRouteService.streams.update.expand({id: '<path>'});               
                      **/
                     update: uriTemplateService.parse('media-vault-streams/{id}/')
+                },
+
+                batch: {
+                    /**
+                     * Parses remove route; this must be expanded with a list of media vault identifiers which need to be removed.
+                     * @method batch.remove       
+                     * @example baasicMediaVaultRouteService.batch.remove.expand({entryIds: <entryIds>);              
+                     **/
+                    remove: uriTemplateService.parse('media-vault-streams/batch/{entryIds}'),
                 }
             };
         }]);
@@ -442,7 +481,7 @@
                      * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource.
                      * @method streams.get        
                      * @example 
-                     baasicFilesService.stream.get('<path>')
+                     baasicMediaVaultService.stream.get('<path>')
                      .success(function (data) {
                      // perform success action here
                      })
@@ -463,7 +502,7 @@
                      * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one.
                      * @method streams.update
                      * @example 
-                     baasicFilesService.streams.update('<path>', <file-stream>)
+                     baasicMediaVaultService.streams.update('<path>', <file-stream>)
                      .success(function (data) {
                      // perform success action here
                      })
@@ -494,7 +533,7 @@
                      * Returns a promise that is resolved once the create file stream action has been performed; this action will upload the specified file stream.
                      * @method streams.create
                      * @example 
-                     baasicFilesService.streams.update('<path>', <file-stream>)
+                     baasicMediaVaultService.streams.update('<path>', <file-stream>)
                      .success(function (data) {
                      // perform success action here
                      })
@@ -519,6 +558,27 @@
                                 'Content-Type': undefined
                             }
                         });
+                    }
+                },
+
+                batch: {
+                    /**
+                     * Returns a promise that is resolved once the remove action has been performed. This action will remove media vault stream resources from the system if successfully completed. 
+                     * @method batch.remove       
+                     * @example 			 
+                     baasicMediaVaultService.batch.remove(<mediaVaultIds>)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });		
+                     **/
+                    remove: function (ids) {
+                        var data = ids.join(',');
+                        return baasicApiHttp.delete(mediaVaultRouteService.batch.remove.expand({
+                            entryIds: data
+                        }));
                     }
                 }
             };

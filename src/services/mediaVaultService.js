@@ -96,7 +96,7 @@ baasicMediaVaultService.update(mediaVaultEntry)
                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource.
                     * @method streams.get        
                     * @example 
-baasicFilesService.stream.get('<path>')
+baasicMediaVaultService.stream.get('<path>')
 .success(function (data) {
     // perform success action here
 })
@@ -117,7 +117,7 @@ baasicFilesService.stream.get('<path>')
                      * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one.
                      * @method streams.update
                      * @example 
-baasicFilesService.streams.update('<path>', <file-stream>)
+baasicMediaVaultService.streams.update('<path>', <file-stream>)
 .success(function (data) {
   // perform success action here
 })
@@ -148,7 +148,7 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                      * Returns a promise that is resolved once the create file stream action has been performed; this action will upload the specified file stream.
                      * @method streams.create
                      * @example 
-baasicFilesService.streams.update('<path>', <file-stream>)
+baasicMediaVaultService.streams.update('<path>', <file-stream>)
 .success(function (data) {
   // perform success action here
 })
@@ -174,7 +174,26 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                             }
                         });                        
                     }                    
-                }
+                },
+                
+                batch: {
+                  /**
+                  * Returns a promise that is resolved once the remove action has been performed. This action will remove media vault stream resources from the system if successfully completed. 
+                  * @method batch.remove       
+                  * @example 			 
+  baasicMediaVaultService.batch.remove(<mediaVaultIds>)
+  .success(function (data) {
+    // perform success action here
+  })
+  .error(function (response, status, headers, config) {
+    // perform error handling here
+  });		
+                  **/		                  
+                  remove: function(ids) {
+                      var data = ids.join(',');
+                      return baasicApiHttp.delete(mediaVaultRouteService.batch.remove.expand({entryIds: data}));   
+                  }                    
+                }                
             };       
         }]);
 }(angular, module));
