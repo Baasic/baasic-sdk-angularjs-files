@@ -7,27 +7,8 @@
     'use strict';
     module.service('baasicMediaVaultService', ['baasicApiHttp', 'baasicApiService', 'baasicConstants', 'baasicMediaVaultRouteService',
         function (baasicApiHttp, baasicApiService, baasicConstants, mediaVaultRouteService) {
-            return {    
+            return {                     
                  /**
-                 * Returns a promise that is resolved once the create media vault action has been performed; this action creates a new media vault resource.
-                 * @method        
-                 * @example 
-baasicMediaVaultService.create({
-  ownerUserId: '<owner-user-id>',
-  description: '<description>'   
-})
-.success(function (data) {
-  // perform success action here
-})
-.error(function (response, status, headers, config) {
-  // perform error handling here
-});
-                **/ 				
-                create: function (data) {
-                    return baasicApiHttp.post(mediaVaultRouteService.create.expand(), baasicApiService.createParams(data)[baasicConstants.modelPropertyName]);
-                },  
-                 
-                /**
                  * Returns a promise that is resolved once the find action has been performed. Success response returns a list of media vault resources matching the given criteria.
                  * @method        
                  * @example 
@@ -126,7 +107,7 @@ baasicFilesService.stream.get('<path>')
                     get: function(data) {
                         if (!angular.isObject(data)){
                             data = {
-                              path: data  
+                              id: data  
                             };
                         }                        
                         baasicApiHttp.get(mediaVaultRouteService.streams.get.expand(data));                                          
@@ -147,7 +128,7 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                     update: function(data, stream) {
                         if (!angular.isObject(data)){
                             data = {
-                              path: data  
+                              id: data  
                             };
                         }
                         var formData = new FormData();

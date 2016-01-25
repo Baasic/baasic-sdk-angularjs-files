@@ -7,28 +7,8 @@
     'use strict';
     module.service('baasicFilesService', ['baasicApiHttp', 'baasicApiService', 'baasicConstants', 'baasicFilesRouteService',
         function (baasicApiHttp, baasicApiService, baasicConstants, filesRouteService) {
-            return {                                                                                                   
-                /**
-                 * Returns a promise that is resolved once the create file action has been performed; this action creates a new file resource.
-                 * @method        
-                 * @example 
-baasicFilesService.create({
-  ownerUserId: '<owner-user-id>',
-  description: '<description>',
-  path: '<path>' 
-})
-.success(function (data) {
-  // perform success action here
-})
-.error(function (response, status, headers, config) {
-  // perform error handling here
-});
-                **/ 				
-                create: function (data) {
-                    return baasicApiHttp.post(filesRouteService.create.expand(), baasicApiService.createParams(data)[baasicConstants.modelPropertyName]);
-                },  
-                 
-                /**
+            return {                                                                                                                    
+                 /**
                  * Returns a promise that is resolved once the find action has been performed. Success response returns a list of file resources matching the given criteria.
                  * @method        
                  * @example 
@@ -127,7 +107,7 @@ baasicFilesService.stream.get('<path>')
                     get: function(data) {
                         if (!angular.isObject(data)){
                             data = {
-                              path: data  
+                              id: data  
                             };
                         }                        
                         baasicApiHttp.get(filesRouteService.streams.get.expand(data));                                          
@@ -148,7 +128,7 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                     update: function(data, stream) {
                         if (!angular.isObject(data)){
                             data = {
-                              path: data  
+                              id: data  
                             };
                         }
                         var formData = new FormData();

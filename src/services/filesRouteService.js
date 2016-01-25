@@ -7,14 +7,7 @@
     'use strict';
     module.service('baasicFilesRouteService', ['baasicUriTemplateService',
         function (uriTemplateService) {
-            return {                                           
-                /**
-                * Parses create route; this URI template does not expose any additional options.
-                * @method        
-                * @example baasicFilesRouteService.create.expand({});              
-                **/  				
-                create: uriTemplateService.parse('files'),          
-                                 
+            return {                                                                                     
                 /**
                 * Parses find route which can be expanded with additional options. Supported items are: 
                 * - `searchQuery` - A string referencing files properties using the phrase or BQL (Baasic Query Language) search.
@@ -36,11 +29,11 @@
                 
                 streams: {
                     /**
-                    * Parses get route; this route should be expanded with the path of the desired file stream.
+                    * Parses get route; this route should be expanded with the id or path of the desired file stream.
                     * @method streams.get
-                    * @example baasicFilesRouteService.streams.get.expand({path: '<path>'});               
+                    * @example baasicFilesRouteService.streams.get.expand({id: '<path>'});               
                     **/ 			
-                    get: uriTemplateService.parse('file-streams/{path}/'),
+                    get: uriTemplateService.parse('file-streams/{id}/'),
 
                     /**
                     * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
@@ -50,11 +43,11 @@
                     create: uriTemplateService.parse('file-streams/{path}/'),
                     
                     /**
-                    * Parses create route; this route should be expanded with the path which indicates which stream should be updated.
+                    * Parses create route; this route should be expanded with the id or path of the previously saved resource.
                     * @method streams.update    
-                    * @example baasicFilesRouteService.streams.update.expand({path: '<path>'});               
+                    * @example baasicFilesRouteService.streams.update.expand({id: '<path>'});               
                     **/ 			
-                    update: uriTemplateService.parse('file-streams/{path}/')               
+                    update: uriTemplateService.parse('file-streams/{id}/')               
                     
                 }                          
             };

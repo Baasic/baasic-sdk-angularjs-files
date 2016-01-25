@@ -36,13 +36,6 @@
         module.service('baasicFilesRouteService', ['baasicUriTemplateService', function (uriTemplateService) {
             return {
                 /**
-                 * Parses create route; this URI template does not expose any additional options.
-                 * @method        
-                 * @example baasicFilesRouteService.create.expand({});              
-                 **/
-                create: uriTemplateService.parse('files'),
-
-                /**
                  * Parses find route which can be expanded with additional options. Supported items are: 
                  * - `searchQuery` - A string referencing files properties using the phrase or BQL (Baasic Query Language) search.
                  * - `page` - A value used to set the page number, i.e. to retrieve certain files subset from the storage.
@@ -63,11 +56,11 @@
 
                 streams: {
                     /**
-                     * Parses get route; this route should be expanded with the path of the desired file stream.
+                     * Parses get route; this route should be expanded with the id or path of the desired file stream.
                      * @method streams.get
-                     * @example baasicFilesRouteService.streams.get.expand({path: '<path>'});               
+                     * @example baasicFilesRouteService.streams.get.expand({id: '<path>'});               
                      **/
-                    get: uriTemplateService.parse('file-streams/{path}/'),
+                    get: uriTemplateService.parse('file-streams/{id}/'),
 
                     /**
                      * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
@@ -77,11 +70,11 @@
                     create: uriTemplateService.parse('file-streams/{path}/'),
 
                     /**
-                     * Parses create route; this route should be expanded with the path which indicates which stream should be updated.
+                     * Parses create route; this route should be expanded with the id or path of the previously saved resource.
                      * @method streams.update    
-                     * @example baasicFilesRouteService.streams.update.expand({path: '<path>'});               
+                     * @example baasicFilesRouteService.streams.update.expand({id: '<path>'});               
                      **/
-                    update: uriTemplateService.parse('file-streams/{path}/')
+                    update: uriTemplateService.parse('file-streams/{id}/')
 
                 }
             };
@@ -107,26 +100,6 @@
         'use strict';
         module.service('baasicFilesService', ['baasicApiHttp', 'baasicApiService', 'baasicConstants', 'baasicFilesRouteService', function (baasicApiHttp, baasicApiService, baasicConstants, filesRouteService) {
             return {
-                /**
-                 * Returns a promise that is resolved once the create file action has been performed; this action creates a new file resource.
-                 * @method        
-                 * @example 
-                 baasicFilesService.create({
-                 ownerUserId: '<owner-user-id>',
-                 description: '<description>',
-                 path: '<path>' 
-                 })
-                 .success(function (data) {
-                 // perform success action here
-                 })
-                 .error(function (response, status, headers, config) {
-                 // perform error handling here
-                 });
-                 **/
-                create: function (data) {
-                    return baasicApiHttp.post(filesRouteService.create.expand(), baasicApiService.createParams(data)[baasicConstants.modelPropertyName]);
-                },
-
                 /**
                  * Returns a promise that is resolved once the find action has been performed. Success response returns a list of file resources matching the given criteria.
                  * @method        
@@ -226,7 +199,7 @@
                     get: function (data) {
                         if (!angular.isObject(data)) {
                             data = {
-                                path: data
+                                id: data
                             };
                         }
                         baasicApiHttp.get(filesRouteService.streams.get.expand(data));
@@ -247,7 +220,7 @@
                     update: function (data, stream) {
                         if (!angular.isObject(data)) {
                             data = {
-                                path: data
+                                id: data
                             };
                         }
                         var formData = new FormData();
@@ -318,13 +291,6 @@
         module.service('baasicMediaVaultRouteService', ['baasicUriTemplateService', function (uriTemplateService) {
             return {
                 /**
-                 * Parses create route; this URI template does not expose any additional options.
-                 * @method        
-                 * @example baasicMediaVaultRouteService.create.expand({});              
-                 **/
-                create: uriTemplateService.parse('media-vaults'),
-
-                /**
                  * Parses find route which can be expanded with additional options. Supported items are: 
                  * - `searchQuery` - A string referencing media vault properties using the phrase or BQL (Baasic Query Language) search.
                  * - `page` - A value used to set the page number, i.e. to retrieve certain media vault subset from the storage.
@@ -345,11 +311,11 @@
 
                 streams: {
                     /**
-                     * Parses get route; this route should be expanded with the path of the desired file stream.
+                     * Parses get route; this route should be expanded with the id or path of the desired file stream.
                      * @method streams.get
-                     * @example baasicMediaVaultRouteService.streams.get.expand({path: '<path>'});               
+                     * @example baasicMediaVaultRouteService.streams.get.expand({id: '<path>'});               
                      **/
-                    get: uriTemplateService.parse('media-vault-streams/{path}/'),
+                    get: uriTemplateService.parse('media-vault-streams/{id}/'),
 
                     /**
                      * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
@@ -359,11 +325,11 @@
                     create: uriTemplateService.parse('media-vault-streams/{path}/'),
 
                     /**
-                     * Parses create route; this route should be expanded with the path which indicates which stream should be updated.
+                     * Parses create route; this route should be expanded with the id or path of the previously saved resource.
                      * @method streams.update
-                     * @example baasicMediaVaultRouteService.streams.update.expand({path: '<path>'});               
+                     * @example baasicMediaVaultRouteService.streams.update.expand({id: '<path>'});               
                      **/
-                    update: uriTemplateService.parse('media-vault-streams/{path}/')
+                    update: uriTemplateService.parse('media-vault-streams/{id}/')
                 }
             };
         }]);
@@ -388,25 +354,6 @@
         'use strict';
         module.service('baasicMediaVaultService', ['baasicApiHttp', 'baasicApiService', 'baasicConstants', 'baasicMediaVaultRouteService', function (baasicApiHttp, baasicApiService, baasicConstants, mediaVaultRouteService) {
             return {
-                /**
-                 * Returns a promise that is resolved once the create media vault action has been performed; this action creates a new media vault resource.
-                 * @method        
-                 * @example 
-                 baasicMediaVaultService.create({
-                 ownerUserId: '<owner-user-id>',
-                 description: '<description>'   
-                 })
-                 .success(function (data) {
-                 // perform success action here
-                 })
-                 .error(function (response, status, headers, config) {
-                 // perform error handling here
-                 });
-                 **/
-                create: function (data) {
-                    return baasicApiHttp.post(mediaVaultRouteService.create.expand(), baasicApiService.createParams(data)[baasicConstants.modelPropertyName]);
-                },
-
                 /**
                  * Returns a promise that is resolved once the find action has been performed. Success response returns a list of media vault resources matching the given criteria.
                  * @method        
@@ -506,7 +453,7 @@
                     get: function (data) {
                         if (!angular.isObject(data)) {
                             data = {
-                                path: data
+                                id: data
                             };
                         }
                         baasicApiHttp.get(mediaVaultRouteService.streams.get.expand(data));
@@ -527,7 +474,7 @@
                     update: function (data, stream) {
                         if (!angular.isObject(data)) {
                             data = {
-                                path: data
+                                id: data
                             };
                         }
                         var formData = new FormData();
