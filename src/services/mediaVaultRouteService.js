@@ -52,11 +52,18 @@
                 
                 batch: {
                     /**
-                    * Parses remove route; this must be expanded with a list of media vault identifiers which need to be removed.
+                    * Parses update route; this URI template does not expose any additional options.
                     * @method batch.remove       
-                    * @example baasicMediaVaultRouteService.batch.remove.expand({entryIds: <entryIds>);              
+                    * @example baasicMediaVaultRouteService.batch.remove.expand({});              
                     **/                      
-                    remove: uriTemplateService.parse('media-vault-streams/batch/{entryIds}'),                    
+                    remove: uriTemplateService.parse('media-vaults/batch'),   
+
+                    /**
+                    * Parses update route; this URI template does not expose any additional options.
+                    * @method batch.update       
+                    * @example baasicMediaVaultRouteService.batch.update.expand({});              
+                    **/                      
+                    update: uriTemplateService.parse('media-vaults/batch')                                        
                 }                                    
             };
         }]);

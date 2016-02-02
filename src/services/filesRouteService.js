@@ -53,11 +53,18 @@
 
                 batch: {
                     /**
-                    * Parses remove route; this must be expanded with a list of file identifiers which need to be removed.
+                    * Parses update route; this URI template does not expose any additional options.
                     * @method batch.remove       
-                    * @example baasicFilesRouteService.batch.remove.expand({ids: <ids>);              
+                    * @example baasicFilesRouteService.batch.remove.expand({});              
                     **/                      
-                    remove: uriTemplateService.parse('file-streams/batch/{ids}'),                    
+                    remove: uriTemplateService.parse('file/batch'), 
+                    
+                    /**
+                    * Parses update route; this URI template does not expose any additional options.
+                    * @method batch.update       
+                    * @example baasicFilesRouteService.batch.update.expand({});              
+                    **/                      
+                    update: uriTemplateService.parse('file/batch')                                      
                 }                           
             };
         }]);

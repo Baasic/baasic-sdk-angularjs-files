@@ -80,11 +80,18 @@
 
                 batch: {
                     /**
-                     * Parses remove route; this must be expanded with a list of file identifiers which need to be removed.
+                     * Parses update route; this URI template does not expose any additional options.
                      * @method batch.remove       
-                     * @example baasicFilesRouteService.batch.remove.expand({ids: <ids>);              
+                     * @example baasicFilesRouteService.batch.remove.expand({});              
                      **/
-                    remove: uriTemplateService.parse('file-streams/batch/{ids}'),
+                    remove: uriTemplateService.parse('file/batch'),
+
+                    /**
+                     * Parses update route; this URI template does not expose any additional options.
+                     * @method batch.update       
+                     * @example baasicFilesRouteService.batch.update.expand({});              
+                     **/
+                    update: uriTemplateService.parse('file/batch')
                 }
             };
         }]);
@@ -291,10 +298,26 @@
                      });		
                      **/
                     remove: function (ids) {
-                        var data = ids.join(',');
-                        return baasicApiHttp.delete(filesRouteService.batch.remove.expand({
-                            ids: data
-                        }));
+                        return baasicApiHttp({
+                            url: filesRouteService.batch.remove.expand(),
+                            method: 'DELETE',
+                            data: ids
+                        });
+                    },
+                    /**
+                     * Returns a promise that is resolved once the update action has been performed; this action updates specified file resources.
+                     * @method batch.update       
+                     * @example 
+                     baasicFilesService.batch.update(files)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    update: function (data) {
+                        return baasicApiHttp.put(filesRouteService.batch.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
                     }
                 }
             };
@@ -364,11 +387,18 @@
 
                 batch: {
                     /**
-                     * Parses remove route; this must be expanded with a list of media vault identifiers which need to be removed.
+                     * Parses update route; this URI template does not expose any additional options.
                      * @method batch.remove       
-                     * @example baasicMediaVaultRouteService.batch.remove.expand({entryIds: <entryIds>);              
+                     * @example baasicMediaVaultRouteService.batch.remove.expand({});              
                      **/
-                    remove: uriTemplateService.parse('media-vault-streams/batch/{entryIds}'),
+                    remove: uriTemplateService.parse('media-vaults/batch'),
+
+                    /**
+                     * Parses update route; this URI template does not expose any additional options.
+                     * @method batch.update       
+                     * @example baasicMediaVaultRouteService.batch.update.expand({});              
+                     **/
+                    update: uriTemplateService.parse('media-vaults/batch')
                 }
             };
         }]);
@@ -575,10 +605,26 @@
                      });		
                      **/
                     remove: function (ids) {
-                        var data = ids.join(',');
-                        return baasicApiHttp.delete(mediaVaultRouteService.batch.remove.expand({
-                            entryIds: data
-                        }));
+                        return baasicApiHttp({
+                            url: mediaVaultRouteService.batch.remove.expand(),
+                            method: 'DELETE',
+                            data: ids
+                        });
+                    },
+                    /**
+                     * Returns a promise that is resolved once the update action has been performed; this action updates specified media vault resources.
+                     * @method batch.update       
+                     * @example 
+                     baasicMediaVaultService.batch.update(files)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    update: function (data) {
+                        return baasicApiHttp.put(mediaVaultRouteService.batch.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
                     }
                 }
             };

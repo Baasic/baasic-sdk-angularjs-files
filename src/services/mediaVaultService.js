@@ -189,10 +189,28 @@ baasicMediaVaultService.streams.update('<path>', <file-stream>)
     // perform error handling here
   });		
                   **/		                  
-                  remove: function(ids) {
-                      var data = ids.join(',');
-                      return baasicApiHttp.delete(mediaVaultRouteService.batch.remove.expand({entryIds: data}));   
-                  }                    
+                  remove: function(ids) {   
+                    return baasicApiHttp({
+                        url: mediaVaultRouteService.batch.remove.expand(),
+                        method: 'DELETE',
+                        data: ids
+                    });                         
+                  },
+                  /**
+                  * Returns a promise that is resolved once the update action has been performed; this action updates specified media vault resources.
+                  * @method batch.update       
+                  * @example 
+  baasicMediaVaultService.batch.update(files)
+  .success(function (data) {
+    // perform success action here
+  })
+  .error(function (response, status, headers, config) {
+    // perform error handling here
+  });
+                  **/ 				
+                  update: function (data) {
+                      return baasicApiHttp.put(mediaVaultRouteService.batch.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
+                  }                                  
                 }                
             };       
         }]);

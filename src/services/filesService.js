@@ -190,9 +190,27 @@ baasicFilesService.streams.update('<path>', <file-stream>)
   });		
                   **/		                  
                   remove: function(ids) {
-                      var data = ids.join(',');
-                      return baasicApiHttp.delete(filesRouteService.batch.remove.expand({ids: data}));   
-                  }                    
+                    return baasicApiHttp({
+                        url: filesRouteService.batch.remove.expand(),
+                        method: 'DELETE',
+                        data: ids
+                    }); 
+                  },
+                  /**
+                  * Returns a promise that is resolved once the update action has been performed; this action updates specified file resources.
+                  * @method batch.update       
+                  * @example 
+  baasicFilesService.batch.update(files)
+  .success(function (data) {
+    // perform success action here
+  })
+  .error(function (response, status, headers, config) {
+    // perform error handling here
+  });
+                  **/ 				
+                  update: function (data) {
+                      return baasicApiHttp.put(filesRouteService.batch.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
+                  }                          
                 }
             };       
         }]);
