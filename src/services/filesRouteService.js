@@ -57,14 +57,14 @@
                     * @method batch.remove       
                     * @example baasicFilesRouteService.batch.remove.expand({});              
                     **/                      
-                    remove: uriTemplateService.parse('file/batch'), 
+                    remove: uriTemplateService.parse('files/batch'), 
                     
                     /**
                     * Parses update route; this URI template does not expose any additional options.
                     * @method batch.update       
                     * @example baasicFilesRouteService.batch.update.expand({});              
                     **/                      
-                    update: uriTemplateService.parse('file/batch')                                      
+                    update: uriTemplateService.parse('files/batch')                                      
                 }                           
             };
         }]);
