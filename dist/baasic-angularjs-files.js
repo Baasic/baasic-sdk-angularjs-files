@@ -80,7 +80,7 @@
 
                 batch: {
                     /**
-                     * Parses update route; this URI template does not expose any additional options.
+                     * Parses remove route; this URI template does not expose any additional options.
                      * @method batch.remove       
                      * @example baasicFilesRouteService.batch.remove.expand({});              
                      **/
@@ -387,7 +387,7 @@
 
                 batch: {
                     /**
-                     * Parses update route; this URI template does not expose any additional options.
+                     * Parses remove route; this URI template does not expose any additional options.
                      * @method batch.remove       
                      * @example baasicMediaVaultRouteService.batch.remove.expand({});              
                      **/
