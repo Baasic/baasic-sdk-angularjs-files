@@ -33,21 +33,21 @@
                     * @method streams.get
                     * @example baasicMediaVaultRouteService.streams.get.expand({id: '<path>'});               
                     **/ 			
-                    get: uriTemplateService.parse('media-vault-streams/{id}/'),
+                    get: uriTemplateService.parse('media-vault-streams/{id}'),
 
                     /**
                     * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
                     * @method streams.create
                     * @example baasicMediaVaultRouteService.streams.create.expand({path: '<path>'});               
                     **/ 			
-                    create: uriTemplateService.parse('media-vault-streams/{path}/'),
+                    create: uriTemplateService.parse('media-vault-streams/{path}'),
                     
                     /**
                     * Parses create route; this route should be expanded with the id or path of the previously saved resource.
                     * @method streams.update
                     * @example baasicMediaVaultRouteService.streams.update.expand({id: '<path>'});               
                     **/ 			
-                    update: uriTemplateService.parse('media-vault-streams/{id}/')                       
+                    update: uriTemplateService.parse('media-vault-streams/{id}')                       
                 },
                 
                 batch: {

@@ -33,21 +33,21 @@
                     * @method streams.get
                     * @example baasicFilesRouteService.streams.get.expand({id: '<path>'});               
                     **/ 			
-                    get: uriTemplateService.parse('file-streams/{id}/'),
+                    get: uriTemplateService.parse('file-streams/{id}'),
 
                     /**
                     * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
                     * @method streams.create
                     * @example baasicFilesRouteService.streams.create.expand({path: '<path>'});               
                     **/ 			
-                    create: uriTemplateService.parse('file-streams/{path}/'),
+                    create: uriTemplateService.parse('file-streams/{path}'),
                     
                     /**
                     * Parses create route; this route should be expanded with the id or path of the previously saved resource.
                     * @method streams.update    
                     * @example baasicFilesRouteService.streams.update.expand({id: '<path>'});               
                     **/ 			
-                    update: uriTemplateService.parse('file-streams/{id}/')               
+                    update: uriTemplateService.parse('file-streams/{id}')               
                     
                 },
 

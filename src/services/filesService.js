@@ -110,8 +110,33 @@ baasicFilesService.stream.get('<path>')
                               id: data  
                             };
                         }                        
-                        baasicApiHttp.get(filesRouteService.streams.get.expand(data));                                          
+                        return baasicApiHttp.get(filesRouteService.streams.get.expand(data));                                          
                     },
+                    
+                    /**
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob.
+                    * @method streams.getBlob        
+                    * @example 
+baasicFilesService.stream.getBlob('<path>')
+.success(function (data) {
+    // perform success action here
+})
+.error(function (response, status, headers, config) {
+    // perform error handling here
+});
+                    **/  	                    
+                    getBlob: function(data) {
+                        if (!angular.isObject(data)){
+                            data = {
+                              id: data  
+                            };
+                        }                        
+                        return baasicApiHttp({
+                            url:  filesRouteService.streams.get.expand(data),
+                            method: 'GET',
+                            responseType: 'blob'                            
+                        });                                                               
+                    },                    
 
                      /**
                      * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one.

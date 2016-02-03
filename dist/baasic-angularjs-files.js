@@ -60,21 +60,21 @@
                      * @method streams.get
                      * @example baasicFilesRouteService.streams.get.expand({id: '<path>'});               
                      **/
-                    get: uriTemplateService.parse('file-streams/{id}/'),
+                    get: uriTemplateService.parse('file-streams/{id}'),
 
                     /**
                      * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
                      * @method streams.create
                      * @example baasicFilesRouteService.streams.create.expand({path: '<path>'});               
                      **/
-                    create: uriTemplateService.parse('file-streams/{path}/'),
+                    create: uriTemplateService.parse('file-streams/{path}'),
 
                     /**
                      * Parses create route; this route should be expanded with the id or path of the previously saved resource.
                      * @method streams.update    
                      * @example baasicFilesRouteService.streams.update.expand({id: '<path>'});               
                      **/
-                    update: uriTemplateService.parse('file-streams/{id}/')
+                    update: uriTemplateService.parse('file-streams/{id}')
 
                 },
 
@@ -218,7 +218,32 @@
                                 id: data
                             };
                         }
-                        baasicApiHttp.get(filesRouteService.streams.get.expand(data));
+                        return baasicApiHttp.get(filesRouteService.streams.get.expand(data));
+                    },
+
+                    /**
+                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob.
+                     * @method streams.getBlob        
+                     * @example 
+                     baasicFilesService.stream.getBlob('<path>')
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    getBlob: function (data) {
+                        if (!angular.isObject(data)) {
+                            data = {
+                                id: data
+                            };
+                        }
+                        return baasicApiHttp({
+                            url: filesRouteService.streams.get.expand(data),
+                            method: 'GET',
+                            responseType: 'blob'
+                        });
                     },
 
                     /**
@@ -368,21 +393,21 @@
                      * @method streams.get
                      * @example baasicMediaVaultRouteService.streams.get.expand({id: '<path>'});               
                      **/
-                    get: uriTemplateService.parse('media-vault-streams/{id}/'),
+                    get: uriTemplateService.parse('media-vault-streams/{id}'),
 
                     /**
                      * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
                      * @method streams.create
                      * @example baasicMediaVaultRouteService.streams.create.expand({path: '<path>'});               
                      **/
-                    create: uriTemplateService.parse('media-vault-streams/{path}/'),
+                    create: uriTemplateService.parse('media-vault-streams/{path}'),
 
                     /**
                      * Parses create route; this route should be expanded with the id or path of the previously saved resource.
                      * @method streams.update
                      * @example baasicMediaVaultRouteService.streams.update.expand({id: '<path>'});               
                      **/
-                    update: uriTemplateService.parse('media-vault-streams/{id}/')
+                    update: uriTemplateService.parse('media-vault-streams/{id}')
                 },
 
                 batch: {
@@ -525,7 +550,32 @@
                                 id: data
                             };
                         }
-                        baasicApiHttp.get(mediaVaultRouteService.streams.get.expand(data));
+                        return baasicApiHttp.get(mediaVaultRouteService.streams.get.expand(data));
+                    },
+
+                    /**
+                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob.
+                     * @method streams.getBlob        
+                     * @example 
+                     baasicMediaVaultService.stream.getBlob('<path>')
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    getBlob: function (data) {
+                        if (!angular.isObject(data)) {
+                            data = {
+                                id: data
+                            };
+                        }
+                        return baasicApiHttp({
+                            url: mediaVaultRouteService.streams.get.expand(data),
+                            method: 'GET',
+                            responseType: 'blob'
+                        });
                     },
 
                     /**
