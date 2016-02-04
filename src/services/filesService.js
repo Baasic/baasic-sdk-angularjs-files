@@ -225,7 +225,7 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                   * Returns a promise that is resolved once the update action has been performed; this action updates specified file resources.
                   * @method batch.update       
                   * @example 
-  baasicFilesService.batch.update(files)
+ baasicFilesService.batch.update(files)
   .success(function (data) {
     // perform success action here
   })
@@ -236,7 +236,87 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                   update: function (data) {
                       return baasicApiHttp.put(filesRouteService.batch.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
                   }                          
-                }
+                },
+                
+                acl: {
+                    /**
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns a list of ACL policies established for the specified file entry resource.
+                    * @method acl.get       
+                    * @example 
+baasicFilesService.acl.get({id: '<file-entry-id>'})
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
+                    **/ 					
+                    get: function (options) {
+                        var params = angular.copy(options);
+                        return baasicApiHttp.get(filesRouteService.acl.get.expand(params));
+                    },
+                    /**
+                    * Returns a promise that is resolved once the update acl action has been performed, this action creates new ACL policy for the specified user profile resource.
+                    * @method acl.update      
+                    * @example 
+var options = {id : '<file-entry-id>'};
+var aclObj =  {
+ actionId: '<action-id'>,
+ roleId: '<roleId>',
+ userId: '<userId>'
+};
+options[baasicConstants.modelPropertyName] = aclObj;
+baasicFilesService.acl.update(options)
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
+				    **/							
+                    update: function (options) {
+                        var params = angular.copy(options);
+                        return baasicApiHttp.put(filesRouteService.acl.get.expand(params), params[baasicConstants.modelPropertyName]);
+                    },
+                    /**
+                    * Returns a promise that is resolved once the removeByUser action has been performed. This action deletes ACL policy assigned to the specified user and user profile resource.
+                    * @method acl.deleteByUser      
+                    * @example 
+baasicFilesService.acl.removeByUser('<file-entry-id>', '<access-action>', '<username>')
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
+				    **/						
+                    removeByUser: function (fileEntryId, action, user, data) {
+                        var params = baasicApiService.removeParams(data);
+                        params.fileEntryId = fileEntryId;
+                        params.user = user;
+                        params.accessAction = action;
+                        return baasicApiHttp.delete(filesRouteService.acl.deleteByUser.expand(params));
+                    },
+                    /**
+                    * Returns a promise that is resolved once the removeByRole action has been performed. This action deletes ACL policy assigned to the specified role and user profile resource.
+                    * @method acl.deleteByRole      
+                    * @example 
+baasicFilesService.acl.removeByRole('<file-entry-id>', '<access-action>', '<role-name>')
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
+				    **/						
+                    removeByRole: function (fileEntryId, action, role, data) {
+                        var params = baasicApiService.removeParams(data);
+                        params.fileEntryId = fileEntryId;
+                        params.role = role;
+                        params.accessAction = action;
+                        return baasicApiHttp.delete(filesRouteService.acl.deleteByRole.expand(params));
+                    }
+                },                 
             };       
         }]);
 }(angular, module));

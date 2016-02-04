@@ -65,7 +65,59 @@
                     * @example baasicFilesRouteService.batch.update.expand({});              
                     **/                      
                     update: uriTemplateService.parse('files/batch')                                      
-                }                           
+                },
+                
+                acl: {
+					/**
+					* Parses get acl route; this URI template should be expanded with the Id of the file entry resource.					
+					* @method acl.get       
+					* @example 
+baasicFilesRouteService.acl.get.expand(
+	{id: '<file-entry-id>'}
+);
+					**/ 				
+                    get: uriTemplateService.parse('files/{id}/acl/{?fields}'),
+                    
+					/**
+					* Parses update acl route; this URI template should be expanded with the Id of the file entry resource.					
+					* @method acl.update       
+					* @example 
+baasicFilesRouteService.acl.update.expand(
+	{id: '<file-entry-id>'}
+);
+					**/ 					
+                    update: uriTemplateService.parse('files/{id}/acl/{?fields}'),
+                    
+					/**
+					* Parses deleteByUser acl route which can be expanded with additional options. Supported items are:
+					* - `id` - Id of the file entry resource.
+					* - `accessAction` - Action abbreviation which identifies ACL policy assigned to the specified user and file entry resource.
+					* - `user` - A value which uniquely identifies user for which ACL policy needs to be removed.					
+					* @method acl.deleteByUser       
+					* @example 
+baasicFilesRouteService.acl.deleteByUser.expand({
+    id: '<file-entry-id>', 
+    accessAction: '<access-action>', 
+    user: '<username>'
+});
+					**/ 					
+                    deleteByUser: uriTemplateService.parse('files/{id}/acl/actions/{accessAction}/users/{user}/'),
+                    
+					/**
+					* Parses deleteByUser acl route which can be expanded with additional options. Supported items are:
+					* - `id` - Id of the file entry resource.
+					* - `accessAction` - Action abbreviation which identifies ACL policy assigned to the specified role and file entry resource.
+					* - `role` - A value which uniquely identifies role for which ACL policy needs to be removed.					
+					* @method acl.deleteByRole       
+					* @example 
+baasicFilesRouteService.acl.deleteByRole.expand({
+    id: '<file-entry-id>', 
+    accessAction: '<access-action>', 
+    role: '<role-name>'
+});
+					**/ 					
+                    deleteByRole: uriTemplateService.parse('files/{id}/acl/actions/{accessAction}/roles/{role}/')					
+                }                                        
             };
         }]);
 }(angular, module));
