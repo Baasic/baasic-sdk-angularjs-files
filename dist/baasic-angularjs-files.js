@@ -250,6 +250,9 @@
                  });
                  **/
                 remove: function (data, options) {
+                    if (!options) {
+                        options = {};
+                    }
                     var removeParams = baasicApiService.removeParams(options);
                     var params = baasicApiService.removeParams(data);
                     var href = filesRouteService.parse(params[baasicConstants.modelPropertyName].links('delete').href + '{?height,width}').expand(removeParams);
@@ -439,6 +442,9 @@
                      });
                      **/
                     remove: function (ids, options) {
+                        if (!options) {
+                            options = {};
+                        }
                         var params = baasicApiService.removeParams(options);
                         return baasicApiHttp({
                             url: filesRouteService.batch.remove.expand(params),
@@ -764,6 +770,9 @@
                  });
                  **/
                 remove: function (data, options) {
+                    if (!options) {
+                        options = {};
+                    }
                     var removeParams = baasicApiService.removeParams(options);
                     var params = baasicApiService.removeParams(data);
                     var href = mediaVaultRouteService.parse(params[baasicConstants.modelPropertyName].links('delete').href + '{?height,width}').expand(removeParams);
@@ -953,6 +962,9 @@
                      });
                      **/
                     remove: function (ids, options) {
+                        if (!options) {
+                            options = {};
+                        }
                         var params = baasicApiService.removeParams(options);
                         return baasicApiHttp({
                             url: mediaVaultRouteService.batch.remove.expand(params),
