@@ -36,6 +36,18 @@
         module.service('baasicFilesRouteService', ['baasicUriTemplateService', function (uriTemplateService) {
             return {
                 /**
+                 * Parses and expands URI templates based on [RFC6570](http://tools.ietf.org/html/rfc6570) specifications. For more information please visit the project [GitHub](https://github.com/Baasic/uritemplate-js) page.
+                 * @method
+                 * @example 
+                 baasicFilesRouteService.parse(
+                 '<route>/{?embed,fields,options}'
+                 ).expand(
+                 {embed: '<embedded-resource>'}
+                 );
+                 **/
+                parse: uriTemplateService.parse,
+
+                /**
                  * Parses find route which can be expanded with additional options. Supported items are: 
                  * - `searchQuery` - A string referencing files properties using the phrase or BQL (Baasic Query Language) search.
                  * - `page` - A value used to set the page number, i.e. to retrieve certain files subset from the storage.
@@ -48,19 +60,21 @@
                 find: uriTemplateService.parse('files/{?searchQuery,page,rpp,sort,embed,fields}'),
 
                 /**
-                 * Parses get route; this route doesn't expose any properties.
+                 * Parses get route; this route should be expanded with the Id of the file resource.
                  * @method        
-                 * @example baasicFilesRouteService.get.expand({});               
+                 * @example baasicFilesRouteService.get.expand({id: '<id>'});               
                  **/
                 get: uriTemplateService.parse('files/{id}/{?embed,fields}'),
 
                 streams: {
                     /**
-                     * Parses get route; this route should be expanded with the id or path of the desired file stream.
+                     * Parses get route; this route should be expanded with the id or path of the desired file stream. Additional supported items are:
+                     * - `width` - width of the desired derived image.
+                     * - `height` - height of the desired derived image.
                      * @method streams.get
                      * @example baasicFilesRouteService.streams.get.expand({id: '<path>'});               
                      **/
-                    get: uriTemplateService.parse('file-streams/{id}'),
+                    get: uriTemplateService.parse('file-streams/{id}/{?width,height}'),
 
                     /**
                      * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
@@ -70,21 +84,25 @@
                     create: uriTemplateService.parse('file-streams/{path}'),
 
                     /**
-                     * Parses create route; this route should be expanded with the id or path of the previously saved resource.
+                     * Parses create route; this route should be expanded with the id or path of the previously saved resource. Additional supported items are:
+                     * - `width` - width of the derived image to update.
+                     * - `height` - height of the derived image to update.                    
                      * @method streams.update    
                      * @example baasicFilesRouteService.streams.update.expand({id: '<path>'});               
                      **/
-                    update: uriTemplateService.parse('file-streams/{id}')
+                    update: uriTemplateService.parse('file-streams/{id}/{?width,height}')
 
                 },
 
                 batch: {
                     /**
-                     * Parses remove route; this URI template does not expose any additional options.
+                     * Parses remove route; this URI template can be exanded with the following items:
+                     * - `width` - width of the desired derived image.
+                     * - `height` - height of the desired derived image.                
                      * @method batch.remove       
                      * @example baasicFilesRouteService.batch.remove.expand({});              
                      **/
-                    remove: uriTemplateService.parse('files/batch'),
+                    remove: uriTemplateService.parse('files/batch/{?width,height}'),
 
                     /**
                      * Parses update route; this URI template does not expose any additional options.
@@ -207,14 +225,14 @@
                 },
 
                 /**
-                 * Returns a promise that is resolved once the remove action has been performed. This action will remove a file resource from the system if successfully completed. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicFilesRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                 * Returns a promise that is resolved once the remove action has been performed. This action will remove a file resource from the system if successfully completed. Alternatively if options are specified the operation will remove all derived resource only. By performing delete on the original all derived resources will also be removed as well. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicFilesRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
                  ```
                  var params = baasicApiService.removeParams(fileEntry);
                  var uri = params['model'].links('delete').href;
                  ```
                  * @method        
                  * @example 
-                 // fileEntry is a resource previously fetched using get action.
+                 // fileEntry is a resource previously fetched using get action. The following action will remove the original resource and the derived resources.
                  baasicFilesRouteService.remove(fileEntry)
                  .success(function (data) {
                  // perform success action here
@@ -222,10 +240,20 @@
                  .error(function (response, status, headers, config) {
                  // perform error handling here
                  });
+                 // fileEntry is a resource previously fetched using get action. The following action will remove the derived resource only.
+                 baasicFilesRouteService.remove(fileEntry, {width: <width>, height: <height>})
+                 .success(function (data) {
+                 // perform success action here
+                 })
+                 .error(function (response, status, headers, config) {
+                 // perform error handling here
+                 });
                  **/
-                remove: function (data) {
+                remove: function (data, options) {
+                    var removeParams = baasicApiService.removeParams(options);
                     var params = baasicApiService.removeParams(data);
-                    return baasicApiHttp.delete(params[baasicConstants.modelPropertyName].links('delete').href);
+                    var href = filesRouteService.parse(params[baasicConstants.modelPropertyName].links('delete').href + '{?height,width}').expand(removeParams);
+                    return baasicApiHttp.delete(href);
                 },
 
                 /**
@@ -253,10 +281,19 @@
 
                 streams: {
                     /**
-                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource.
+                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource. In order to obtain a derived item width and height properties must be specified.
                      * @method streams.get        
                      * @example 
-                     baasicFilesService.stream.get('<path>')
+                     // Request the original resource
+                     baasicFilesService.stream.get({id: '<path>'})
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     // Request derived resource stream
+                     baasicFilesService.stream.get({id: '<path>', width: <width>, height: <height>})
                      .success(function (data) {
                      // perform success action here
                      })
@@ -274,10 +311,19 @@
                     },
 
                     /**
-                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob.
+                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob. In order to obtain a derived item width and height properties must be specified.
                      * @method streams.getBlob        
                      * @example 
+                     // Request the original resource
                      baasicFilesService.stream.getBlob('<path>')
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     // Request derovated resource stream
+                     baasicFilesService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
                      .success(function (data) {
                      // perform success action here
                      })
@@ -299,10 +345,19 @@
                     },
 
                     /**
-                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one.
+                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived item is being updated it will either create a new derived item or replace the existing derived item. In order to update a derived item width and height properties must be specified.
                      * @method streams.update
-                     * @example 
+                     * @example
+                     // Update existing original resource
                      baasicFilesService.streams.update('<path>', <file-stream>)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     // Update derived resource
+                     baasicFilesService.streams.update({id: '<path>', width: <width>, height: <height>}, <file-stream>)
                      .success(function (data) {
                      // perform success action here
                      })
@@ -363,20 +418,30 @@
 
                 batch: {
                     /**
-                     * Returns a promise that is resolved once the remove action has been performed. This action will remove file stream resources from the system if successfully completed. 
+                     * Returns a promise that is resolved once the remove action has been performed. This action will remove file stream resources from the system if successfully completed. Alternatively if options are specified the operation will remove all specified derived resources. By performing delete on the original all derived resources will also be removed as well.
                      * @method batch.remove       
-                     * @example 			 
+                     * @example
+                     // Remove original resources
                      baasicFilesService.batch.remove(<fileStreamIds>)
                      .success(function (data) {
                      // perform success action here
                      })
                      .error(function (response, status, headers, config) {
                      // perform error handling here
-                     });		
+                     });
+                     // Remove derived resources
+                     baasicFilesService.batch.remove(<fileStreamIds>, {width: <width>, height: <height>})
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
                      **/
-                    remove: function (ids) {
+                    remove: function (ids, options) {
+                        var params = baasicApiService.removeParams(options);
                         return baasicApiHttp({
-                            url: filesRouteService.batch.remove.expand(),
+                            url: filesRouteService.batch.remove.expand(params),
                             method: 'DELETE',
                             data: ids
                         });
@@ -501,6 +566,18 @@
         module.service('baasicMediaVaultRouteService', ['baasicUriTemplateService', function (uriTemplateService) {
             return {
                 /**
+                 * Parses and expands URI templates based on [RFC6570](http://tools.ietf.org/html/rfc6570) specifications. For more information please visit the project [GitHub](https://github.com/Baasic/uritemplate-js) page.
+                 * @method
+                 * @example 
+                 baasicFilesRouteService.parse(
+                 '<route>/{?embed,fields,options}'
+                 ).expand(
+                 {embed: '<embedded-resource>'}
+                 );
+                 **/
+                parse: uriTemplateService.parse,
+
+                /**
                  * Parses find route which can be expanded with additional options. Supported items are: 
                  * - `searchQuery` - A string referencing media vault properties using the phrase or BQL (Baasic Query Language) search.
                  * - `page` - A value used to set the page number, i.e. to retrieve certain media vault subset from the storage.
@@ -513,19 +590,21 @@
                 find: uriTemplateService.parse('media-vaults/{?searchQuery,page,rpp,sort,embed,fields}'),
 
                 /**
-                 * Parses get route; this route doesn't expose any properties.
+                 * Parses get route; this route should be expanded with the Id of the media vault resource.
                  * @method        
-                 * @example baasicMediaVaultRouteService.get.expand({});               
+                 * @example baasicMediaVaultRouteService.get.expand({id: '<id>'});               
                  **/
                 get: uriTemplateService.parse('media-vaults/{id}/{?embed,fields}'),
 
                 streams: {
                     /**
-                     * Parses get route; this route should be expanded with the id or path of the desired file stream.
+                     * Parses get route; this route should be expanded with the id or path of the desired file stream. Additional supported items are:
+                     * - `width` - width of the desired derived image.
+                     * - `height` - height of the desired derived image.                    
                      * @method streams.get
                      * @example baasicMediaVaultRouteService.streams.get.expand({id: '<path>'});               
                      **/
-                    get: uriTemplateService.parse('media-vault-streams/{id}'),
+                    get: uriTemplateService.parse('media-vault-streams/{id}/{?width,height}'),
 
                     /**
                      * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
@@ -535,20 +614,24 @@
                     create: uriTemplateService.parse('media-vault-streams/{path}'),
 
                     /**
-                     * Parses create route; this route should be expanded with the id or path of the previously saved resource.
+                     * Parses create route; this route should be expanded with the id or path of the previously saved resource. Additional supported items are:
+                     * - `width` - width of the desired derived image.
+                     * - `height` - height of the desired derived image.                     
                      * @method streams.update
                      * @example baasicMediaVaultRouteService.streams.update.expand({id: '<path>'});               
                      **/
-                    update: uriTemplateService.parse('media-vault-streams/{id}')
+                    update: uriTemplateService.parse('media-vault-streams/{id}/{?width,height}')
                 },
 
                 batch: {
                     /**
-                     * Parses remove route; this URI template does not expose any additional options.
+                     * Parses remove route; this URI template can be exanded with the following items:
+                     * - `width` - width of the desired derived image.
+                     * - `height` - height of the desired derived image.     
                      * @method batch.remove       
                      * @example baasicMediaVaultRouteService.batch.remove.expand({});              
                      **/
-                    remove: uriTemplateService.parse('media-vaults/batch'),
+                    remove: uriTemplateService.parse('media-vaults/batch/{?width,height}'),
 
                     /**
                      * Parses update route; this URI template does not expose any additional options.
@@ -556,6 +639,43 @@
                      * @example baasicMediaVaultRouteService.batch.update.expand({});              
                      **/
                     update: uriTemplateService.parse('media-vaults/batch')
+                },
+
+                settings: {
+                    /**
+                     * Parses get route; this route doesn not expose any additional options.
+                     * @method settings.get
+                     * @example baasicMediaVaultRouteService.settings.get.expand({});               
+                     **/
+                    get: uriTemplateService.parse('media-vault-settings'),
+
+                    /**
+                     * Parses update route; this URI template does not expose any additional options.
+                     * @method settings.update       
+                     * @example baasicMediaVaultRouteService.settings.update.expand({});              
+                     **/
+                    update: uriTemplateService.parse('media-vault-settings')
+                },
+
+                processingProviderSettings: {
+                    /**
+                     * Parses find route which can be expanded with additional options. Supported items are: 
+                     * - `searchQuery` - A string referencing media vault processing provider setting properties using the phrase or BQL (Baasic Query Language) search.
+                     * - `page` - A value used to set the page number, i.e. to retrieve certain media vault processing provider settings subset from the storage.
+                     * - `rpp` - A value used to limit the size of result set per page.
+                     * - `sort` - A string used to set the media vault property to sort the result collection by.
+                     * - `embed` - Comma separated list of resources to be contained within the current representation.
+                     * @method        
+                     * @example baasicMediaVaultRouteService.processingProviderSettings.find.expand({searchQuery: '<search-phrase>'});               
+                     **/
+                    find: uriTemplateService.parse('media-vault-preprocessing-settings/{?searchQuery,page,rpp,sort,embed,fields}'),
+
+                    /**
+                     * Parses get route; this route should be expanded with the Id of the media vault processing provider setting resource.
+                     * @method        
+                     * @example baasicMediaVaultRouteService.processingProviderSettings.get.expand({id: '<id>'});               
+                     **/
+                    get: uriTemplateService.parse('media-vault-preprocessing-settings/{id}/{?embed,fields}')
                 }
             };
         }]);
@@ -619,14 +739,14 @@
                 },
 
                 /**
-                 * Returns a promise that is resolved once the remove action has been performed. This action will remove a media vault resource from the system if successfully completed. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicMediaVaultRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                 * Returns a promise that is resolved once the remove action has been performed. This action will remove a media vault resource from the system if successfully completed. Alternatively if options are specified the operation will remove all derived resource only. By performing delete on the original all derived resources will also be removed as well. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicMediaVaultRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
                  ```
                  var params = baasicApiService.removeParams(mediaVaultEntry);
                  var uri = params['model'].links('delete').href;
                  ```
                  * @method        
                  * @example 
-                 // mediaVaultEntry is a resource previously fetched using get action.
+                 // mediaVaultEntry is a resource previously fetched using get action. The following action will remove the original resource and the derived resources.
                  baasicMediaVaultService.remove(mediaVaultEntry)
                  .success(function (data) {
                  // perform success action here
@@ -634,10 +754,20 @@
                  .error(function (response, status, headers, config) {
                  // perform error handling here
                  });
+                 // mediaVaultEntry is a resource previously fetched using get action. The following action will remove the derived resource only.
+                 baasicMediaVaultService.remove(mediaVaultEntry, {width: <width>, height: <height>})
+                 .success(function (data) {
+                 // perform success action here
+                 })
+                 .error(function (response, status, headers, config) {
+                 // perform error handling here
+                 });
                  **/
-                remove: function (data) {
+                remove: function (data, options) {
+                    var removeParams = baasicApiService.removeParams(options);
                     var params = baasicApiService.removeParams(data);
-                    return baasicApiHttp.delete(params[baasicConstants.modelPropertyName].links('delete').href);
+                    var href = mediaVaultRouteService.parse(params[baasicConstants.modelPropertyName].links('delete').href + '{?height,width}').expand(removeParams);
+                    return baasicApiHttp.delete(href);
                 },
 
                 /**
@@ -665,10 +795,19 @@
 
                 streams: {
                     /**
-                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource.
+                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource. In order to obtain a derived item width and height properties must be specified.
                      * @method streams.get        
                      * @example 
+                     // Request the original resource
                      baasicMediaVaultService.stream.get('<path>')
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     // Request derived resource stream
+                     baasicMediaVaultService.stream.get({id: '<path>', width: <width>, height: <height>})
                      .success(function (data) {
                      // perform success action here
                      })
@@ -686,10 +825,19 @@
                     },
 
                     /**
-                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob.
+                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob. In order to obtain a derived item width and height properties must be specified.
                      * @method streams.getBlob        
                      * @example 
+                     // Request original resource
                      baasicMediaVaultService.stream.getBlob('<path>')
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     // Request derived resource stream
+                     baasicMediaVaultService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
                      .success(function (data) {
                      // perform success action here
                      })
@@ -711,10 +859,19 @@
                     },
 
                     /**
-                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one.
+                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived item is being updated it will either create a new derived item or replace the existing derived item. In order to update a derived item width and height properties must be specified.
                      * @method streams.update
-                     * @example 
+                     * @example
+                     // Update existing original resource
                      baasicMediaVaultService.streams.update('<path>', <file-stream>)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     // Update derived resource
+                     baasicMediaVaultService.streams.update({id: '<path>', width: <width>, height: <height>}, <file-stream>)
                      .success(function (data) {
                      // perform success action here
                      })
@@ -775,20 +932,30 @@
 
                 batch: {
                     /**
-                     * Returns a promise that is resolved once the remove action has been performed. This action will remove media vault stream resources from the system if successfully completed. 
+                     * Returns a promise that is resolved once the remove action has been performed. This action will remove media vault stream resources from the system if successfully completed.  Alternatively if options are specified the operation will remove all specified derived resources. By performing delete on the original all derived resources will also be removed as well.
                      * @method batch.remove       
-                     * @example 			 
+                     * @example
+                     // Remove original resources
                      baasicMediaVaultService.batch.remove(<mediaVaultIds>)
                      .success(function (data) {
                      // perform success action here
                      })
                      .error(function (response, status, headers, config) {
                      // perform error handling here
-                     });		
+                     });
+                     // Remove derived resources
+                     baasicMediaVaultService.batch.remove(<mediaVaultIds>, {width: <width>, height: <height>})
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
                      **/
-                    remove: function (ids) {
+                    remove: function (ids, options) {
+                        var params = baasicApiService.removeParams(options);
                         return baasicApiHttp({
-                            url: mediaVaultRouteService.batch.remove.expand(),
+                            url: mediaVaultRouteService.batch.remove.expand(params),
                             method: 'DELETE',
                             data: ids
                         });
@@ -807,6 +974,103 @@
                      **/
                     update: function (data) {
                         return baasicApiHttp.put(mediaVaultRouteService.batch.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
+                    }
+                },
+
+                settings: {
+                    /**
+                     * Returns a promise that is resolved once the get action has been performed. Success response returns media vault settings resource.
+                     * @method settings.get        
+                     * @example 
+                     baasicMediaVaultService.settings.get()
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    get: function () {
+                        return baasicApiHttp.get(mediaVaultRouteService.settings.get.expand({}));
+                    },
+
+                    /**
+                     * Returns a promise that is resolved once the update action has been performed; this action updates the media vault settings resource.
+                     * @method settings.update       
+                     * @example 
+                     baasicMediaVaultService.settings.update(mediaVaultSettings)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    update: function (data) {
+                        return baasicApiHttp.put(mediaVaultRouteService.settings.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
+                    }
+                },
+
+                processingProviderSettings: {
+                    /**
+                     * Returns a promise that is resolved once the find action has been performed. Success response returns a list of media vault processing providers matching the given criteria.
+                     * @method        
+                     * @example 
+                     baasicMediaVaultService.processingProviderSettings.find({
+                     pageNumber : 1,
+                     pageSize : 10,
+                     orderBy : '<field>',
+                     orderDirection : '<asc|desc>',
+                     search : '<search-phrase>'
+                     })
+                     .success(function (collection) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    find: function (options) {
+                        return baasicApiHttp.get(mediaVaultRouteService.processingProviderSettingsfind.expand(baasicApiService.findParams(options)));
+                    },
+
+                    /**
+                     * Returns a promise that is resolved once the get action has been performed. Success response returns the media vault processing provider resource.
+                     * @method        
+                     * @example 
+                     baasicMediaVaultService.processingProviderSettings.get('<id>')
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    get: function (id, options) {
+                        return baasicApiHttp.get(mediaVaultRouteService.processingProviderSettings.get.expand(baasicApiService.getParams(id, options)));
+                    },
+
+                    /**
+                     * Returns a promise that is resolved once the update action has been performed; this action updates a media vault processing provider setting resource. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicMediaVaultRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                     ```
+                     var params = baasicApiService.removeParams(processingProviderSetting);
+                     var uri = params['model'].links('put').href;
+                     ```
+                     * @method        
+                     * @example 
+                     // processingProviderSettings is a resource previously fetched using get action.
+                     processingProviderSettings.settings.faceDetection = true;
+                     baasicMediaVaultService.processingProviderSettings.update(processingProviderSetting)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    update: function (data) {
+                        var params = baasicApiService.updateParams(data);
+                        return baasicApiHttp.put(params[baasicConstants.modelPropertyName].links('put').href, params[baasicConstants.modelPropertyName]);
                     }
                 }
             };

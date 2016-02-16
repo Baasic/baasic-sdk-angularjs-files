@@ -7,7 +7,19 @@
     'use strict';
     module.service('baasicMediaVaultRouteService', ['baasicUriTemplateService',
         function (uriTemplateService) {
-            return {                                      
+            return {    
+                /**
+                * Parses and expands URI templates based on [RFC6570](http://tools.ietf.org/html/rfc6570) specifications. For more information please visit the project [GitHub](https://github.com/Baasic/uritemplate-js) page.
+                * @method
+                * @example 
+baasicFilesRouteService.parse(
+	'<route>/{?embed,fields,options}'
+).expand(
+	{embed: '<embedded-resource>'}
+);
+                **/ 				
+                parse: uriTemplateService.parse,  
+                                                                  
                 /**
                 * Parses find route which can be expanded with additional options. Supported items are: 
                 * - `searchQuery` - A string referencing media vault properties using the phrase or BQL (Baasic Query Language) search.
@@ -21,19 +33,21 @@
                 find: uriTemplateService.parse('media-vaults/{?searchQuery,page,rpp,sort,embed,fields}'),     
                            
                 /**
-                * Parses get route; this route doesn't expose any properties.
+                * Parses get route; this route should be expanded with the Id of the media vault resource.
                 * @method        
-                * @example baasicMediaVaultRouteService.get.expand({});               
+                * @example baasicMediaVaultRouteService.get.expand({id: '<id>'});               
                 **/ 			
                 get: uriTemplateService.parse('media-vaults/{id}/{?embed,fields}'),                    
                 
                 streams: {
                     /**
-                    * Parses get route; this route should be expanded with the id or path of the desired file stream.
+                    * Parses get route; this route should be expanded with the id or path of the desired file stream. Additional supported items are:
+                    * - `width` - width of the desired derived image.
+                    * - `height` - height of the desired derived image.                    
                     * @method streams.get
                     * @example baasicMediaVaultRouteService.streams.get.expand({id: '<path>'});               
                     **/ 			
-                    get: uriTemplateService.parse('media-vault-streams/{id}'),
+                    get: uriTemplateService.parse('media-vault-streams/{id}/{?width,height}'),
 
                     /**
                     * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
@@ -43,20 +57,24 @@
                     create: uriTemplateService.parse('media-vault-streams/{path}'),
                     
                     /**
-                    * Parses create route; this route should be expanded with the id or path of the previously saved resource.
+                    * Parses create route; this route should be expanded with the id or path of the previously saved resource. Additional supported items are:
+                    * - `width` - width of the desired derived image.
+                    * - `height` - height of the desired derived image.                     
                     * @method streams.update
                     * @example baasicMediaVaultRouteService.streams.update.expand({id: '<path>'});               
                     **/ 			
-                    update: uriTemplateService.parse('media-vault-streams/{id}')                       
+                    update: uriTemplateService.parse('media-vault-streams/{id}/{?width,height}')                       
                 },
                 
                 batch: {
                     /**
-                    * Parses remove route; this URI template does not expose any additional options.
+                    * Parses remove route; this URI template can be exanded with the following items:
+                    * - `width` - width of the desired derived image.
+                    * - `height` - height of the desired derived image.     
                     * @method batch.remove       
                     * @example baasicMediaVaultRouteService.batch.remove.expand({});              
                     **/                      
-                    remove: uriTemplateService.parse('media-vaults/batch'),   
+                    remove: uriTemplateService.parse('media-vaults/batch/{?width,height}'),   
 
                     /**
                     * Parses update route; this URI template does not expose any additional options.
@@ -64,7 +82,44 @@
                     * @example baasicMediaVaultRouteService.batch.update.expand({});              
                     **/                      
                     update: uriTemplateService.parse('media-vaults/batch')                                        
-                }                                    
+                },
+                
+                settings: {
+                    /**
+                    * Parses get route; this route doesn not expose any additional options.
+                    * @method settings.get
+                    * @example baasicMediaVaultRouteService.settings.get.expand({});               
+                    **/ 	                    
+                    get: uriTemplateService.parse('media-vault-settings'),
+                    
+                    /**
+                    * Parses update route; this URI template does not expose any additional options.
+                    * @method settings.update       
+                    * @example baasicMediaVaultRouteService.settings.update.expand({});              
+                    **/                     
+                    update: uriTemplateService.parse('media-vault-settings')   
+                },
+                
+                processingProviderSettings: {
+                    /**
+                    * Parses find route which can be expanded with additional options. Supported items are: 
+                    * - `searchQuery` - A string referencing media vault processing provider setting properties using the phrase or BQL (Baasic Query Language) search.
+                    * - `page` - A value used to set the page number, i.e. to retrieve certain media vault processing provider settings subset from the storage.
+                    * - `rpp` - A value used to limit the size of result set per page.
+                    * - `sort` - A string used to set the media vault property to sort the result collection by.
+                    * - `embed` - Comma separated list of resources to be contained within the current representation.
+                    * @method        
+                    * @example baasicMediaVaultRouteService.processingProviderSettings.find.expand({searchQuery: '<search-phrase>'});               
+                    **/  			
+                    find: uriTemplateService.parse('media-vault-preprocessing-settings/{?searchQuery,page,rpp,sort,embed,fields}'),     
+                            
+                    /**
+                    * Parses get route; this route should be expanded with the Id of the media vault processing provider setting resource.
+                    * @method        
+                    * @example baasicMediaVaultRouteService.processingProviderSettings.get.expand({id: '<id>'});               
+                    **/ 			
+                    get: uriTemplateService.parse('media-vault-preprocessing-settings/{id}/{?embed,fields}')                     
+                }                            
             };
         }]);
 }(angular, module));

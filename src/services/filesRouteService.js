@@ -7,7 +7,19 @@
     'use strict';
     module.service('baasicFilesRouteService', ['baasicUriTemplateService',
         function (uriTemplateService) {
-            return {                                                                                     
+            return {       
+                /**
+                * Parses and expands URI templates based on [RFC6570](http://tools.ietf.org/html/rfc6570) specifications. For more information please visit the project [GitHub](https://github.com/Baasic/uritemplate-js) page.
+                * @method
+                * @example 
+baasicFilesRouteService.parse(
+	'<route>/{?embed,fields,options}'
+).expand(
+	{embed: '<embedded-resource>'}
+);
+                **/ 				
+                parse: uriTemplateService.parse,                
+                                                                                              
                 /**
                 * Parses find route which can be expanded with additional options. Supported items are: 
                 * - `searchQuery` - A string referencing files properties using the phrase or BQL (Baasic Query Language) search.
@@ -21,19 +33,21 @@
                 find: uriTemplateService.parse('files/{?searchQuery,page,rpp,sort,embed,fields}'),     
                            
                 /**
-                * Parses get route; this route doesn't expose any properties.
+                * Parses get route; this route should be expanded with the Id of the file resource.
                 * @method        
-                * @example baasicFilesRouteService.get.expand({});               
+                * @example baasicFilesRouteService.get.expand({id: '<id>'});               
                 **/ 			
                 get: uriTemplateService.parse('files/{id}/{?embed,fields}'),                    
                 
                 streams: {
                     /**
-                    * Parses get route; this route should be expanded with the id or path of the desired file stream.
+                    * Parses get route; this route should be expanded with the id or path of the desired file stream. Additional supported items are:
+                    * - `width` - width of the desired derived image.
+                    * - `height` - height of the desired derived image.
                     * @method streams.get
                     * @example baasicFilesRouteService.streams.get.expand({id: '<path>'});               
                     **/ 			
-                    get: uriTemplateService.parse('file-streams/{id}'),
+                    get: uriTemplateService.parse('file-streams/{id}/{?width,height}'),
 
                     /**
                     * Parses create route; this route should be expanded with the path which indicates where the stream will be saved.
@@ -43,21 +57,25 @@
                     create: uriTemplateService.parse('file-streams/{path}'),
                     
                     /**
-                    * Parses create route; this route should be expanded with the id or path of the previously saved resource.
+                    * Parses create route; this route should be expanded with the id or path of the previously saved resource. Additional supported items are:
+                    * - `width` - width of the derived image to update.
+                    * - `height` - height of the derived image to update.                    
                     * @method streams.update    
                     * @example baasicFilesRouteService.streams.update.expand({id: '<path>'});               
                     **/ 			
-                    update: uriTemplateService.parse('file-streams/{id}')               
+                    update: uriTemplateService.parse('file-streams/{id}/{?width,height}')         
                     
                 },
 
                 batch: {
                     /**
-                    * Parses remove route; this URI template does not expose any additional options.
+                    * Parses remove route; this URI template can be exanded with the following items:
+                    * - `width` - width of the desired derived image.
+                    * - `height` - height of the desired derived image.                
                     * @method batch.remove       
                     * @example baasicFilesRouteService.batch.remove.expand({});              
                     **/                      
-                    remove: uriTemplateService.parse('files/batch'), 
+                    remove: uriTemplateService.parse('files/batch/{?width,height}'), 
                     
                     /**
                     * Parses update route; this URI template does not expose any additional options.

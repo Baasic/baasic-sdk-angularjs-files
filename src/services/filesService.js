@@ -47,15 +47,23 @@ baasicFilesService.get('<id>')
                 },
                 
                  /**
-                 * Returns a promise that is resolved once the remove action has been performed. This action will remove a file resource from the system if successfully completed. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicFilesRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                 * Returns a promise that is resolved once the remove action has been performed. This action will remove a file resource from the system if successfully completed. Alternatively if options are specified the operation will remove all derived resource only. By performing delete on the original all derived resources will also be removed as well. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicFilesRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
 ```
 var params = baasicApiService.removeParams(fileEntry);
 var uri = params['model'].links('delete').href;
 ```
                  * @method        
                  * @example 
-// fileEntry is a resource previously fetched using get action.				 
+// fileEntry is a resource previously fetched using get action. The following action will remove the original resource and the derived resources.			 
 baasicFilesRouteService.remove(fileEntry)
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
+// fileEntry is a resource previously fetched using get action. The following action will remove the derived resource only.		 
+baasicFilesRouteService.remove(fileEntry, {width: <width>, height: <height>})
 .success(function (data) {
   // perform success action here
 })
@@ -63,9 +71,11 @@ baasicFilesRouteService.remove(fileEntry)
   // perform error handling here
 });		
 				**/		                			
-                remove: function (data) {
+                remove: function (data, options) {
+                    var removeParams = baasicApiService.removeParams(options);
                     var params = baasicApiService.removeParams(data);
-                    return baasicApiHttp.delete(params[baasicConstants.modelPropertyName].links('delete').href);
+                    var href = filesRouteService.parse(params[baasicConstants.modelPropertyName].links('delete').href + '{?height,width}').expand(removeParams);
+                    return baasicApiHttp.delete(href);
                 },
                 
                 /**
@@ -93,10 +103,19 @@ baasicFilesService.update(fileEntry)
                                                                                                                 
                 streams: {                    
                     /**
-                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource.
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource. In order to obtain a derived item width and height properties must be specified.
                     * @method streams.get        
                     * @example 
-baasicFilesService.stream.get('<path>')
+// Request the original resource               
+baasicFilesService.stream.get({id: '<path>'})
+.success(function (data) {
+    // perform success action here
+})
+.error(function (response, status, headers, config) {
+    // perform error handling here
+});                    
+// Request derived resource stream                
+baasicFilesService.stream.get({id: '<path>', width: <width>, height: <height>})
 .success(function (data) {
     // perform success action here
 })
@@ -114,10 +133,19 @@ baasicFilesService.stream.get('<path>')
                     },
                     
                     /**
-                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob.
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob. In order to obtain a derived item width and height properties must be specified.
                     * @method streams.getBlob        
                     * @example 
+// Request the original resource                 
 baasicFilesService.stream.getBlob('<path>')
+.success(function (data) {
+    // perform success action here
+})
+.error(function (response, status, headers, config) {
+    // perform error handling here
+});
+// Request derovated resource stream                 
+baasicFilesService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
 .success(function (data) {
     // perform success action here
 })
@@ -139,10 +167,19 @@ baasicFilesService.stream.getBlob('<path>')
                     },                    
 
                      /**
-                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one.
+                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived item is being updated it will either create a new derived item or replace the existing derived item. In order to update a derived item width and height properties must be specified.
                      * @method streams.update
-                     * @example 
+                     * @example
+// Update existing original resource 
 baasicFilesService.streams.update('<path>', <file-stream>)
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
+// Update derived resource 
+baasicFilesService.streams.update({id: '<path>', width: <width>, height: <height>}, <file-stream>)
 .success(function (data) {
   // perform success action here
 })
@@ -203,20 +240,30 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                 
                 batch: {
                   /**
-                  * Returns a promise that is resolved once the remove action has been performed. This action will remove file stream resources from the system if successfully completed. 
+                  * Returns a promise that is resolved once the remove action has been performed. This action will remove file stream resources from the system if successfully completed. Alternatively if options are specified the operation will remove all specified derived resources. By performing delete on the original all derived resources will also be removed as well.
                   * @method batch.remove       
-                  * @example 			 
-  baasicFilesService.batch.remove(<fileStreamIds>)
-  .success(function (data) {
-    // perform success action here
-  })
-  .error(function (response, status, headers, config) {
-    // perform error handling here
-  });		
+                  * @example
+// Remove original resources                
+baasicFilesService.batch.remove(<fileStreamIds>)
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});		
+// Remove derived resources                
+baasicFilesService.batch.remove(<fileStreamIds>, {width: <width>, height: <height>})
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});		  
                   **/		                  
-                  remove: function(ids) {
+                  remove: function(ids, options) {
+                    var params = baasicApiService.removeParams(options);
                     return baasicApiHttp({
-                        url: filesRouteService.batch.remove.expand(),
+                        url: filesRouteService.batch.remove.expand(params),
                         method: 'DELETE',
                         data: ids
                     }); 
@@ -225,13 +272,13 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                   * Returns a promise that is resolved once the update action has been performed; this action updates specified file resources.
                   * @method batch.update       
                   * @example 
- baasicFilesService.batch.update(files)
-  .success(function (data) {
-    // perform success action here
-  })
-  .error(function (response, status, headers, config) {
-    // perform error handling here
-  });
+baasicFilesService.batch.update(files)
+.success(function (data) {
+  // perform success action here
+})
+.error(function (response, status, headers, config) {
+  // perform error handling here
+});
                   **/ 				
                   update: function (data) {
                       return baasicApiHttp.put(filesRouteService.batch.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
