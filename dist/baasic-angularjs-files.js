@@ -1043,7 +1043,7 @@
                      });
                      **/
                     find: function (options) {
-                        return baasicApiHttp.get(mediaVaultRouteService.processingProviderSettingsfind.expand(baasicApiService.findParams(options)));
+                        return baasicApiHttp.get(mediaVaultRouteService.processingProviderSettings.find.expand(baasicApiService.findParams(options)));
                     },
 
                     /**
