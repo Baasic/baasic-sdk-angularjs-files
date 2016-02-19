@@ -82,7 +82,14 @@ baasicFilesRouteService.parse(
                     * @method batch.update       
                     * @example baasicFilesRouteService.batch.update.expand({});              
                     **/                      
-                    update: uriTemplateService.parse('files/batch')                                      
+                    update: uriTemplateService.parse('files/batch'),
+                   
+                    /**
+                    * Parses update route; this URI template does not expose any additional options.
+                    * @method batch.link       
+                    * @example baasicFilesRouteService.batch.link.expand({});              
+                    **/                       
+                    link: uriTemplateService.parse('files/batch/link')                           
                 },
                 
                 acl: {

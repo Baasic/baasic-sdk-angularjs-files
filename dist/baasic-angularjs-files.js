@@ -109,7 +109,14 @@
                      * @method batch.update       
                      * @example baasicFilesRouteService.batch.update.expand({});              
                      **/
-                    update: uriTemplateService.parse('files/batch')
+                    update: uriTemplateService.parse('files/batch'),
+
+                    /**
+                     * Parses update route; this URI template does not expose any additional options.
+                     * @method batch.link       
+                     * @example baasicFilesRouteService.batch.link.expand({});              
+                     **/
+                    link: uriTemplateService.parse('files/batch/link')
                 },
 
                 acl: {
@@ -466,6 +473,22 @@
                      **/
                     update: function (data) {
                         return baasicApiHttp.put(filesRouteService.batch.update.expand(), baasicApiService.updateParams(data)[baasicConstants.modelPropertyName]);
+                    },
+
+                    /**
+                     * Returns a promise that is resolved once the link action has been performed; this action links other module file resources such as resources from Media Vault to Files module.
+                     * @method batch.link       
+                     * @example 
+                     baasicFilesService.batch.link(files)
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    link: function (data) {
+                        return baasicApiHttp.post(filesRouteService.batch.link.expand(), baasicApiService.createParams(data)[baasicConstants.modelPropertyName]);
                     }
                 },
 
