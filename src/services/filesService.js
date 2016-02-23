@@ -75,9 +75,8 @@ baasicFilesRouteService.remove(fileEntry, {width: <width>, height: <height>})
                     if (!options){
                         options = {};
                     }
-                    var removeParams = baasicApiService.removeParams(options);
                     var params = baasicApiService.removeParams(data);
-                    var href = filesRouteService.parse(params[baasicConstants.modelPropertyName].links('delete').href + '{?height,width}').expand(removeParams);
+                    var href = filesRouteService.parse(params[baasicConstants.modelPropertyName].links('delete').href + '{?height,width}').expand(options);
                     return baasicApiHttp.delete(href);
                 },
                 
@@ -267,9 +266,8 @@ baasicFilesService.batch.remove(<fileStreamIds>, {width: <width>, height: <heigh
                     if (!options){
                         options = {};
                     }                      
-                    var params = baasicApiService.removeParams(options);
                     return baasicApiHttp({
-                        url: filesRouteService.batch.remove.expand(params),
+                        url: filesRouteService.batch.remove.expand(options),
                         method: 'DELETE',
                         data: ids
                     }); 

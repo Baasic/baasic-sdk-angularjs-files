@@ -1,6 +1,6 @@
 {
   "name": "baasic-angularjs-files",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "devDependencies": {
     "baasic-javascript-docgen": "git://github.com/Baasic/baasic-javascript-docgen",
     "gulp": ">3.4.0",
