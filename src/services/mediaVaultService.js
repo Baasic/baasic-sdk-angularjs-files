@@ -246,15 +246,15 @@ baasicMediaVaultService.streams.update('<path>', <file-stream>)
                   * @method batch.remove       
                   * @example
 // Remove original resources		 
-baasicMediaVaultService.batch.remove(<mediaVaultIds>)
+baasicMediaVaultService.batch.remove([{ id: <mediaVaultId> }])
 .success(function (data) {
   // perform success action here
 })
 .error(function (response, status, headers, config) {
   // perform error handling here
 });	
-// Remove derived resources		 
-baasicMediaVaultService.batch.remove(<mediaVaultIds>, {width: <width>, height: <height>})
+// Remove derived image resources		 
+baasicMediaVaultService.batch.remove([{ id: <mediaVaultId>, fileFormat: { width: <width>, height: <height> } }])
 .success(function (data) {
   // perform success action here
 })

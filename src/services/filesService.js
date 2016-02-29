@@ -246,15 +246,15 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                   * @method batch.remove       
                   * @example
 // Remove original resources                
-baasicFilesService.batch.remove(<fileStreamIds>)
+baasicFilesService.batch.remove([{ id: <fileStreamId> }])
 .success(function (data) {
   // perform success action here
 })
 .error(function (response, status, headers, config) {
   // perform error handling here
 });		
-// Remove derived resources                
-baasicFilesService.batch.remove(<fileStreamIds>, {width: <width>, height: <height>})
+// Remove derived image resources  
+baasicFilesService.batch.remove([{ id: <fileStreamId>, fileFormat: { width: <width>, height: <height> } }])
 .success(function (data) {
   // perform success action here
 })
