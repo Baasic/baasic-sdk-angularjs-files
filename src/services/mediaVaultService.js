@@ -262,14 +262,11 @@ baasicMediaVaultService.batch.remove([{ id: <mediaVaultId>, fileFormat: { width:
   // perform error handling here
 });	  	
                   **/		                  
-                  remove: function(ids, options) {
-                    if (!options){
-                        options = {};
-                    }                      
+                  remove: function(data) {                                          
                     return baasicApiHttp({
-                        url: mediaVaultRouteService.batch.remove.expand(options),
+                        url: mediaVaultRouteService.batch.remove.expand(data),
                         method: 'DELETE',
-                        data: ids
+                        data: data
                     });                         
                   },
                   /**

@@ -68,13 +68,11 @@ baasicFilesRouteService.parse(
                 
                 batch: {
                     /**
-                    * Parses remove route; this URI template can be exanded with the following items:
-                    * - `width` - width of the desired derived image.
-                    * - `height` - height of the desired derived image.     
+                    * Parses remove route; this URI template does not expose any additional options.                         
                     * @method batch.remove       
                     * @example baasicMediaVaultRouteService.batch.remove.expand({});              
                     **/                      
-                    remove: uriTemplateService.parse('media-vaults/batch/{?width,height}'),   
+                    remove: uriTemplateService.parse('media-vaults/batch'),   
 
                     /**
                     * Parses update route; this URI template does not expose any additional options.

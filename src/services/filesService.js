@@ -262,14 +262,11 @@ baasicFilesService.batch.remove([{ id: <fileStreamId>, fileFormat: { width: <wid
   // perform error handling here
 });		  
                   **/		                  
-                  remove: function(ids, options) {
-                    if (!options){
-                        options = {};
-                    }                      
+                  remove: function(data) {                                          
                     return baasicApiHttp({
-                        url: filesRouteService.batch.remove.expand(options),
+                        url: filesRouteService.batch.remove.expand({}),
                         method: 'DELETE',
-                        data: ids
+                        data: data
                     }); 
                   },
                   /**

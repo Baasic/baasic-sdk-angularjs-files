@@ -96,13 +96,11 @@
 
                 batch: {
                     /**
-                     * Parses remove route; this URI template can be exanded with the following items:
-                     * - `width` - width of the desired derived image.
-                     * - `height` - height of the desired derived image.                
+                     * Parses remove route; this URI template does not expose any additional options.                                    
                      * @method batch.remove       
                      * @example baasicFilesRouteService.batch.remove.expand({});              
                      **/
-                    remove: uriTemplateService.parse('files/batch/{?width,height}'),
+                    remove: uriTemplateService.parse('files/batch'),
 
                     /**
                      * Parses update route; this URI template does not expose any additional options.
@@ -431,15 +429,15 @@
                      * @method batch.remove       
                      * @example
                      // Remove original resources
-                     baasicFilesService.batch.remove(<fileStreamIds>)
+                     baasicFilesService.batch.remove([{ id: <fileStreamId> }])
                      .success(function (data) {
                      // perform success action here
                      })
                      .error(function (response, status, headers, config) {
                      // perform error handling here
                      });
-                     // Remove derived resources
-                     baasicFilesService.batch.remove(<fileStreamIds>, {width: <width>, height: <height>})
+                     // Remove derived image resources
+                     baasicFilesService.batch.remove([{ id: <fileStreamId>, fileFormat: { width: <width>, height: <height> } }])
                      .success(function (data) {
                      // perform success action here
                      })
@@ -447,14 +445,11 @@
                      // perform error handling here
                      });
                      **/
-                    remove: function (ids, options) {
-                        if (!options) {
-                            options = {};
-                        }
+                    remove: function (data) {
                         return baasicApiHttp({
-                            url: filesRouteService.batch.remove.expand(options),
+                            url: filesRouteService.batch.remove.expand({}),
                             method: 'DELETE',
-                            data: ids
+                            data: data
                         });
                     },
                     /**
@@ -652,13 +647,11 @@
 
                 batch: {
                     /**
-                     * Parses remove route; this URI template can be exanded with the following items:
-                     * - `width` - width of the desired derived image.
-                     * - `height` - height of the desired derived image.     
+                     * Parses remove route; this URI template does not expose any additional options.                         
                      * @method batch.remove       
                      * @example baasicMediaVaultRouteService.batch.remove.expand({});              
                      **/
-                    remove: uriTemplateService.parse('media-vaults/batch/{?width,height}'),
+                    remove: uriTemplateService.parse('media-vaults/batch'),
 
                     /**
                      * Parses update route; this URI template does not expose any additional options.
@@ -965,15 +958,15 @@
                      * @method batch.remove       
                      * @example
                      // Remove original resources
-                     baasicMediaVaultService.batch.remove(<mediaVaultIds>)
+                     baasicMediaVaultService.batch.remove([{ id: <mediaVaultId> }])
                      .success(function (data) {
                      // perform success action here
                      })
                      .error(function (response, status, headers, config) {
                      // perform error handling here
                      });
-                     // Remove derived resources
-                     baasicMediaVaultService.batch.remove(<mediaVaultIds>, {width: <width>, height: <height>})
+                     // Remove derived image resources
+                     baasicMediaVaultService.batch.remove([{ id: <mediaVaultId>, fileFormat: { width: <width>, height: <height> } }])
                      .success(function (data) {
                      // perform success action here
                      })
@@ -981,14 +974,11 @@
                      // perform error handling here
                      });
                      **/
-                    remove: function (ids, options) {
-                        if (!options) {
-                            options = {};
-                        }
+                    remove: function (data) {
                         return baasicApiHttp({
-                            url: mediaVaultRouteService.batch.remove.expand(options),
+                            url: mediaVaultRouteService.batch.remove.expand(data),
                             method: 'DELETE',
-                            data: ids
+                            data: data
                         });
                     },
                     /**
