@@ -1,7 +1,7 @@
 /* globals module */
 /**
  * @module baasicMediaVaultService
- * @description Baasic Media Vault Service provides Baasic route templates which can be expanded to Baasic REST URIs. Various services can use Baasic Media Vault Route Service to obtain a needed routes while other routes will be obtained through HAL. By convention, all route services use the same function names as their corresponding services.
+ * @description Baasic Media Vault Service provides Baasic route templates which can be expanded to Baasic REST URIs. Various services can use Baasic Media Vault Route Service to obtain needed routes while other routes will be obtained through HAL. By convention, all route services use the same function names as their corresponding services.
 */
 (function (angular, module, undefined) {
     'use strict';
@@ -31,10 +31,10 @@ baasicMediaVaultService.find({
                 },    
                 
                 /**
-                * Returns a promise that is resolved once the get action has been performed. Success response returns the media vault resource.
+                * Returns a promise that is resolved once the get action has been performed. Success response returns requested media vault resource.
                 * @method        
                 * @example 
-baasicMediaVaultService.get('<id>')
+baasicMediaVaultService.get('<media-vault-id>')
 .success(function (data) {
   // perform success action here
 })
@@ -47,14 +47,14 @@ baasicMediaVaultService.get('<id>')
                 },
                 
                  /**
-                 * Returns a promise that is resolved once the remove action has been performed. This action will remove a media vault resource from the system if successfully completed. Alternatively if options are specified the operation will remove all derived resource only. By performing delete on the original all derived resources will also be removed as well. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicMediaVaultRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                 * Returns a promise that is resolved once the remove action has been performed. This action will remove one or many media vault resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of media vault resource, the operation will remove just requested derived resource. Otherwise, specified media vault and all its accompanying derived resources will be removed from the system. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply baasicMediaVaultRouteService route template. Here is an example of how a route can be obtained from HAL enabled objects:
 ```
 var params = baasicApiService.removeParams(mediaVaultEntry);
 var uri = params['model'].links('delete').href;
 ```
                  * @method        
                  * @example 
-// mediaVaultEntry is a resource previously fetched using get action. The following action will remove the original resource and the derived resources.			 
+// mediaVaultEntry is a media vault resource previously fetched using get action. The following action will remove the original media vault resource and all accompanying derived media vault resources.		
 baasicMediaVaultService.remove(mediaVaultEntry)
 .success(function (data) {
   // perform success action here
@@ -62,7 +62,7 @@ baasicMediaVaultService.remove(mediaVaultEntry)
 .error(function (response, status, headers, config) {
   // perform error handling here
 });
-// mediaVaultEntry is a resource previously fetched using get action. The following action will remove the derived resource only.		 
+// mediaVaultEntry is a media vault resource previously fetched using get action. The following action will remove  derived media vault resource only.		 
 baasicMediaVaultService.remove(mediaVaultEntry, {width: <width>, height: <height>})
 .success(function (data) {
   // perform success action here
@@ -81,14 +81,14 @@ baasicMediaVaultService.remove(mediaVaultEntry, {width: <width>, height: <height
                 },
                 
                 /**
-                 * Returns a promise that is resolved once the update media vault action has been performed; this action updates a media vault resource. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicMediaVaultRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                 * Returns a promise that is resolved once the update media vault action has been performed; this action will update a media vault resource if successfully completed. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicMediaVaultRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
 ```
 var params = baasicApiService.removeParams(mediaVaultEntry);
 var uri = params['model'].links('put').href;
 ```
                  * @method        
                  * @example 
-// mediaVaultEntry is a resource previously fetched using get action.
+// mediaVaultEntry is a media vault resource previously fetched using get action.
 mediaVaultEntry.description = '<description>';
 baasicMediaVaultService.update(mediaVaultEntry)
 .success(function (data) {
@@ -105,10 +105,10 @@ baasicMediaVaultService.update(mediaVaultEntry)
                                                                                             
                 streams: {
                     /**
-                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource. In order to obtain a derived item width and height properties must be specified.
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns the media vault stream if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of media vault resource, the operation will return a stream of the derived resource. Otherwise, stream of the original media vault resource will be retrieved.
                     * @method streams.get        
                     * @example 
-// Request the original resource
+// Request the original media vault stream   
 baasicMediaVaultService.stream.get('<path>')
 .success(function (data) {
     // perform success action here
@@ -116,7 +116,7 @@ baasicMediaVaultService.stream.get('<path>')
 .error(function (response, status, headers, config) {
     // perform error handling here
 });
-// Request derived resource stream
+// Request derived media vault stream    
 baasicMediaVaultService.stream.get({id: '<path>', width: <width>, height: <height>})
 .success(function (data) {
     // perform success action here
@@ -135,10 +135,10 @@ baasicMediaVaultService.stream.get({id: '<path>', width: <width>, height: <heigh
                     },
                     
                     /**
-                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream resource as a blob. In order to obtain a derived item width and height properties must be specified.
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns the media vault stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of media vault resource, the operation will return a blob of the derived resource. Otherwise, blob of the original media vault resource will be retrieved.
                     * @method streams.getBlob        
                     * @example 
-// Request original resource
+// Request the original media vault resource blob   
 baasicMediaVaultService.stream.getBlob('<path>')
 .success(function (data) {
     // perform success action here
@@ -146,7 +146,7 @@ baasicMediaVaultService.stream.getBlob('<path>')
 .error(function (response, status, headers, config) {
     // perform error handling here
 });
-// Request derived resource stream
+// Request derived media vault resource blob   
 baasicMediaVaultService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
 .success(function (data) {
     // perform success action here
@@ -169,7 +169,7 @@ baasicMediaVaultService.stream.getBlob({id: '<path>', width: <width>, height: <h
                     },                      
 
                      /**
-                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived item is being updated it will either create a new derived item or replace the existing derived item. In order to update a derived item width and height properties must be specified.
+                     * Returns a promise that is resolved once the update media vault stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived resource is being updated it will either create a new derived resource or replace the existing one. In order to update a derived resource, format needs to be passed (For example: `width` and `height` for the image type of file resource).
                      * @method streams.update
                      * @example
 // Update existing original resource
@@ -242,11 +242,11 @@ baasicMediaVaultService.streams.update('<path>', <file-stream>)
                 
                 batch: {
                   /**
-                  * Returns a promise that is resolved once the remove action has been performed. This action will remove media vault stream resources from the system if successfully completed.  Alternatively if options are specified the operation will remove all specified derived resources. By performing delete on the original all derived resources will also be removed as well.
+                  * Returns a promise that is resolved once the remove action has been performed. This action will remove media vault resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of media vault resource, the operation will remove just requested derived resource. Otherwise, specified media vault and all its accompanying derived resources will be removed from the system.
                   * @method batch.remove       
                   * @example
-// Remove original resources		 
-baasicMediaVaultService.batch.remove([{ id: <mediaVaultId> }])
+// Remove original media vault resources		 
+baasicMediaVaultService.batch.remove([{ id: <media-vault-id> }])
 .success(function (data) {
   // perform success action here
 })
@@ -254,7 +254,7 @@ baasicMediaVaultService.batch.remove([{ id: <mediaVaultId> }])
   // perform error handling here
 });	
 // Remove derived image resources		 
-baasicMediaVaultService.batch.remove([{ id: <mediaVaultId>, fileFormat: { width: <width>, height: <height> } }])
+baasicMediaVaultService.batch.remove([{ id: <media-vault-id>, fileFormat: { width: <width>, height: <height> } }])
 .success(function (data) {
   // perform success action here
 })
@@ -387,9 +387,6 @@ baasicMediaVaultService.processingProviderSettings.update(processingProviderSett
 }(angular, module));
 
 /**
- * @copyright (c) 2015 Mono
- * @license MIT
- * @author Mono
  * @overview 
  ***Notes:**
  - Refer to the [REST API documentation](https://github.com/Baasic/baasic-rest-api/wiki) for detailed information about available Baasic REST API end-points.
