@@ -137,7 +137,7 @@ baasicFilesService.stream.get({id: '<path>', width: <width>, height: <height>})
                     * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will return a blob of the derived resource. Otherwise, blob of the original file resource will be retrieved.
                     * @method streams.getBlob        
                     * @example 
-// Request the original file resource blob                
+// Request the original file blob                
 baasicFilesService.stream.getBlob('<path>')
 .success(function (data) {
     // perform success action here
@@ -145,7 +145,7 @@ baasicFilesService.stream.getBlob('<path>')
 .error(function (response, status, headers, config) {
     // perform error handling here
 });
-// Request derived file resource blob                 
+// Request derived file blob                 
 baasicFilesService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
 .success(function (data) {
     // perform success action here
@@ -168,10 +168,10 @@ baasicFilesService.stream.getBlob({id: '<path>', width: <width>, height: <height
                     },                    
 
                      /**
-                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived resource is being updated it will either create a new derived resource or replace the existing one. In order to update a derived resource, format needs to be passed (For example: `width` and `height` for the image type of file resource).
+                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one. Alternatively, if a derived stream is being updated it will either create a new derived stream or replace the existing one. In order to update a derived stream, format needs to be passed (For example: `width` and `height` for the image type of file stream data type).
                      * @method streams.update
                      * @example
-// Update original file resource 
+// Update original file stream 
 baasicFilesService.streams.update('<path>', <file-stream>)
 .success(function (data) {
   // perform success action here
@@ -179,7 +179,7 @@ baasicFilesService.streams.update('<path>', <file-stream>)
 .error(function (response, status, headers, config) {
   // perform error handling here
 });
-// Update derived file resource 
+// Update derived file stream 
 baasicFilesService.streams.update({id: '<path>', width: <width>, height: <height>}, <file-stream>)
 .success(function (data) {
   // perform success action here

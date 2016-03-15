@@ -34,7 +34,7 @@
             return {
                 /**
                  * Parses find route which can be expanded with additional options. Supported items are: 
-                 * - `searchQuery` - A string referencing files properties using the phrase search.
+                 * - `searchQuery` - A string referencing file properties using the phrase search.
                  * - `page` - A value used to set the page number, i.e. to retrieve certain file subset from the storage.
                  * - `rpp` - A value used to limit the size of result set per page.
                  * - `sort` - A string used to set the file property to sort the result collection by.
@@ -65,8 +65,8 @@
                      * @method streams.get
                      * @example 
                      baasicFilesRouteService.streams.get.expand(
-                     {id: '<path>'
-                     });
+                     {id: '<path>'}
+                     );
                      **/
                     get: uriTemplateService.parse('file-streams/{id}/{?width,height}'),
 
@@ -328,7 +328,7 @@
                      * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will return a blob of the derived resource. Otherwise, blob of the original file resource will be retrieved.
                      * @method streams.getBlob        
                      * @example 
-                     // Request the original file resource blob
+                     // Request the original file blob
                      baasicFilesService.stream.getBlob('<path>')
                      .success(function (data) {
                      // perform success action here
@@ -336,7 +336,7 @@
                      .error(function (response, status, headers, config) {
                      // perform error handling here
                      });
-                     // Request derived file resource blob
+                     // Request derived file blob
                      baasicFilesService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
                      .success(function (data) {
                      // perform success action here
@@ -359,10 +359,10 @@
                     },
 
                     /**
-                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived resource is being updated it will either create a new derived resource or replace the existing one. In order to update a derived resource, format needs to be passed (For example: `width` and `height` for the image type of file resource).
+                     * Returns a promise that is resolved once the update file stream action has been performed; this action will replace the existing stream with a new one. Alternatively, if a derived stream is being updated it will either create a new derived stream or replace the existing one. In order to update a derived stream, format needs to be passed (For example: `width` and `height` for the image type of file stream data type).
                      * @method streams.update
                      * @example
-                     // Update original file resource
+                     // Update original file stream
                      baasicFilesService.streams.update('<path>', <file-stream>)
                      .success(function (data) {
                      // perform success action here
@@ -370,7 +370,7 @@
                      .error(function (response, status, headers, config) {
                      // perform error handling here
                      });
-                     // Update derived file resource
+                     // Update derived file stream
                      baasicFilesService.streams.update({id: '<path>', width: <width>, height: <height>}, <file-stream>)
                      .success(function (data) {
                      // perform success action here
@@ -689,7 +689,7 @@
                      * - `searchQuery` - A string referencing media vault processing provider setting properties using the phrase search.
                      * - `page` - A value used to set the page number, i.e. to retrieve certain media vault processing provider settings subset from the storage.
                      * - `rpp` - A value used to limit the size of result set per page.
-                     * - `sort` - A string used to set the media vault property to sort the result collection by.
+                     * - `sort` - A string used to set the media vault processing provider setting property to sort the result collection by.
                      * - `embed` - Comma separated list of resources to be contained within the current representation.
                      * @method        
                      * @example 
@@ -870,7 +870,7 @@
                      * Returns a promise that is resolved once the get action has been performed. Success response returns the media vault stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of media vault resource, the operation will return a blob of the derived resource. Otherwise, blob of the original media vault resource will be retrieved.
                      * @method streams.getBlob        
                      * @example 
-                     // Request the original media vault resource blob
+                     // Request the original media vault blob
                      baasicMediaVaultService.stream.getBlob('<path>')
                      .success(function (data) {
                      // perform success action here
@@ -878,7 +878,7 @@
                      .error(function (response, status, headers, config) {
                      // perform error handling here
                      });
-                     // Request derived media vault resource blob
+                     // Request derived media vault blob
                      baasicMediaVaultService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
                      .success(function (data) {
                      // perform success action here
@@ -901,10 +901,10 @@
                     },
 
                     /**
-                     * Returns a promise that is resolved once the update media vault stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived resource is being updated it will either create a new derived resource or replace the existing one. In order to update a derived resource, format needs to be passed (For example: `width` and `height` for the image type of file resource).
+                     * Returns a promise that is resolved once the update media vault stream action has been performed; this action will replace the existing stream with a new one. Alternatively, if a derived stream is being updated it will either create a new derived stream or replace the existing one. In order to update a derived stream, format needs to be passed (For example: `width` and `height` for the image type of media vault stream data type).
                      * @method streams.update
                      * @example
-                     // Update existing original resource
+                     // Update existing original media vault  stream
                      baasicMediaVaultService.streams.update('<path>', <file-stream>)
                      .success(function (data) {
                      // perform success action here
@@ -912,7 +912,7 @@
                      .error(function (response, status, headers, config) {
                      // perform error handling here
                      });
-                     // Update derived resource
+                     // Update derived media vault stream
                      baasicMediaVaultService.streams.update({id: '<path>', width: <width>, height: <height>}, <file-stream>)
                      .success(function (data) {
                      // perform success action here
@@ -941,10 +941,10 @@
                     },
 
                     /**
-                     * Returns a promise that is resolved once the create file stream action has been performed; this action will upload the specified file stream.
+                     * Returns a promise that is resolved once the create media vault stream action has been performed; this action will upload the specified media vault stream.
                      * @method streams.create
                      * @example 
-                     baasicMediaVaultService.streams.update('<path>', <file-stream>)
+                     baasicMediaVaultService.streams.update('<path>', <media-vault-stream>)
                      .success(function (data) {
                      // perform success action here
                      })
@@ -985,7 +985,7 @@
                      .error(function (response, status, headers, config) {
                      // perform error handling here
                      });
-                     // Remove derived image resources
+                     // Remove derived media vault resources
                      baasicMediaVaultService.batch.remove([{ id: <media-vault-id>, fileFormat: { width: <width>, height: <height> } }])
                      .success(function (data) {
                      // perform success action here

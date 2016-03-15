@@ -138,7 +138,7 @@ baasicMediaVaultService.stream.get({id: '<path>', width: <width>, height: <heigh
                     * Returns a promise that is resolved once the get action has been performed. Success response returns the media vault stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of media vault resource, the operation will return a blob of the derived resource. Otherwise, blob of the original media vault resource will be retrieved.
                     * @method streams.getBlob        
                     * @example 
-// Request the original media vault resource blob   
+// Request the original media vault blob   
 baasicMediaVaultService.stream.getBlob('<path>')
 .success(function (data) {
     // perform success action here
@@ -146,7 +146,7 @@ baasicMediaVaultService.stream.getBlob('<path>')
 .error(function (response, status, headers, config) {
     // perform error handling here
 });
-// Request derived media vault resource blob   
+// Request derived media vault blob   
 baasicMediaVaultService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
 .success(function (data) {
     // perform success action here
@@ -169,10 +169,10 @@ baasicMediaVaultService.stream.getBlob({id: '<path>', width: <width>, height: <h
                     },                      
 
                      /**
-                     * Returns a promise that is resolved once the update media vault stream action has been performed; this action will replace the existing stream with a new one. Alternatively if a derived resource is being updated it will either create a new derived resource or replace the existing one. In order to update a derived resource, format needs to be passed (For example: `width` and `height` for the image type of file resource).
+                     * Returns a promise that is resolved once the update media vault stream action has been performed; this action will replace the existing stream with a new one. Alternatively, if a derived stream is being updated it will either create a new derived stream or replace the existing one. In order to update a derived stream, format needs to be passed (For example: `width` and `height` for the image type of media vault stream data type).
                      * @method streams.update
                      * @example
-// Update existing original resource
+// Update existing original media vault  stream
 baasicMediaVaultService.streams.update('<path>', <file-stream>)
 .success(function (data) {
   // perform success action here
@@ -180,7 +180,7 @@ baasicMediaVaultService.streams.update('<path>', <file-stream>)
 .error(function (response, status, headers, config) {
   // perform error handling here
 });
-// Update derived resource
+// Update derived media vault stream
 baasicMediaVaultService.streams.update({id: '<path>', width: <width>, height: <height>}, <file-stream>)
 .success(function (data) {
   // perform success action here
@@ -209,10 +209,10 @@ baasicMediaVaultService.streams.update({id: '<path>', width: <width>, height: <h
                     },
 
                      /**
-                     * Returns a promise that is resolved once the create file stream action has been performed; this action will upload the specified file stream.
+                     * Returns a promise that is resolved once the create media vault stream action has been performed; this action will upload the specified media vault stream.
                      * @method streams.create
                      * @example 
-baasicMediaVaultService.streams.update('<path>', <file-stream>)
+baasicMediaVaultService.streams.update('<path>', <media-vault-stream>)
 .success(function (data) {
   // perform success action here
 })
@@ -253,7 +253,7 @@ baasicMediaVaultService.batch.remove([{ id: <media-vault-id> }])
 .error(function (response, status, headers, config) {
   // perform error handling here
 });	
-// Remove derived image resources		 
+// Remove derived media vault resources		 
 baasicMediaVaultService.batch.remove([{ id: <media-vault-id>, fileFormat: { width: <width>, height: <height> } }])
 .success(function (data) {
   // perform success action here

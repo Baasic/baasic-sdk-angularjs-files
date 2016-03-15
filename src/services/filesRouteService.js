@@ -10,7 +10,7 @@
             return {                                                 
                 /**
                 * Parses find route which can be expanded with additional options. Supported items are: 
-                * - `searchQuery` - A string referencing files properties using the phrase search.
+                * - `searchQuery` - A string referencing file properties using the phrase search.
                 * - `page` - A value used to set the page number, i.e. to retrieve certain file subset from the storage.
                 * - `rpp` - A value used to limit the size of result set per page.
                 * - `sort` - A string used to set the file property to sort the result collection by.
@@ -41,8 +41,8 @@ baasicFilesRouteService.get.expand(
                     * @method streams.get
                     * @example 
 baasicFilesRouteService.streams.get.expand(
-    {id: '<path>'
-});               
+    {id: '<path>'}
+);               
                     **/ 			
                     get: uriTemplateService.parse('file-streams/{id}/{?width,height}'),
 

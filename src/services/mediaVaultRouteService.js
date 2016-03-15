@@ -106,7 +106,7 @@ baasicMediaVaultRouteService.streams.update.expand(
                     * - `searchQuery` - A string referencing media vault processing provider setting properties using the phrase search.
                     * - `page` - A value used to set the page number, i.e. to retrieve certain media vault processing provider settings subset from the storage.
                     * - `rpp` - A value used to limit the size of result set per page.
-                    * - `sort` - A string used to set the media vault property to sort the result collection by.
+                    * - `sort` - A string used to set the media vault processing provider setting property to sort the result collection by.
                     * - `embed` - Comma separated list of resources to be contained within the current representation.
                     * @method        
                     * @example 
