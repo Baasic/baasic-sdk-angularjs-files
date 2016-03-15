@@ -47,7 +47,7 @@ baasicFilesService.get('<file-id>')
                 },
                 
                  /**
-                 * Returns a promise that is resolved once the remove action has been performed. This action will remove one or many file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just requested derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply baasicFilesRouteService route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                 * Returns a promise that is resolved once the remove action has been performed. This action will remove one or many file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply baasicFilesRouteService route template. Here is an example of how a route can be obtained from HAL enabled objects:
 ```
 var params = baasicApiService.removeParams(fileEntry);
 var uri = params['model'].links('delete').href;
@@ -241,7 +241,7 @@ baasicFilesService.streams.update('<path>', <file-stream>)
                 
                 batch: {
                   /**
-                  * Returns a promise that is resolved once the remove action has been performed. This action will remove file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just requested derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system.
+                  * Returns a promise that is resolved once the remove action has been performed. This action will remove file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system.
                   * @method batch.remove       
                   * @example
 // Remove original file resources                
