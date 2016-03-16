@@ -134,10 +134,10 @@ baasicFilesService.stream.get({id: '<path>', width: <width>, height: <height>})
                     },
                     
                     /**
-                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will return a blob of the derived resource. Otherwise, blob of the original file resource will be retrieved.
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will return a blob of the derived file resource. Otherwise, blob of the original file resource will be retrieved. For more information on Blob objects please see [Blob Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
                     * @method streams.getBlob        
                     * @example 
-// Request the original file blob                
+// Request the original blob                
 baasicFilesService.stream.getBlob('<path>')
 .success(function (data) {
     // perform success action here
@@ -145,7 +145,7 @@ baasicFilesService.stream.getBlob('<path>')
 .error(function (response, status, headers, config) {
     // perform error handling here
 });
-// Request derived file blob                 
+// Request derived blob                 
 baasicFilesService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
 .success(function (data) {
     // perform success action here
@@ -208,10 +208,10 @@ baasicFilesService.streams.update({id: '<path>', width: <width>, height: <height
                     },
 
                      /**
-                     * Returns a promise that is resolved once the create file stream action has been performed; this action will upload the specified file stream.
+                     * Returns a promise that is resolved once the create file stream action has been performed; this action will upload the specified blob. For more information on Blob objects please see [Blob Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
                      * @method streams.create
                      * @example 
-baasicFilesService.streams.update('<path>', <file-stream>)
+baasicFilesService.streams.create('<path>', <blob>)
 .success(function (data) {
   // perform success action here
 })
@@ -252,7 +252,7 @@ baasicFilesService.batch.remove([{ id: <file-id> }])
 .error(function (response, status, headers, config) {
   // perform error handling here
 });		
-// Remove derived image resources  
+// Remove derived file resources  
 baasicFilesService.batch.remove([{ id: <file-id>, fileFormat: { width: <width>, height: <height> } }])
 .success(function (data) {
   // perform success action here

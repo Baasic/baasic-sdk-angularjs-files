@@ -62,7 +62,7 @@ baasicMediaVaultService.remove(mediaVaultEntry)
 .error(function (response, status, headers, config) {
   // perform error handling here
 });
-// mediaVaultEntry is a media vault resource previously fetched using get action. The following action will remove  derived media vault resource only.		 
+// mediaVaultEntry is a media vault resource previously fetched using get action. The following action will remove derived media vault resource only.		 
 baasicMediaVaultService.remove(mediaVaultEntry, {width: <width>, height: <height>})
 .success(function (data) {
   // perform success action here
@@ -135,10 +135,10 @@ baasicMediaVaultService.stream.get({id: '<path>', width: <width>, height: <heigh
                     },
                     
                     /**
-                    * Returns a promise that is resolved once the get action has been performed. Success response returns the media vault stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of media vault resource, the operation will return a blob of the derived resource. Otherwise, blob of the original media vault resource will be retrieved.
+                    * Returns a promise that is resolved once the get action has been performed. Success response returns the media vault stream as a blob. If derived resource's format is passed, such as `width` and `height` for the image type of media vault resource, the operation will return a blob of the derived media vault resource. Otherwise, blob of the original media vault resource will be retrieved. For more information on Blob objects please see [Blob Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
                     * @method streams.getBlob        
                     * @example 
-// Request the original media vault blob   
+// Request the original blob   
 baasicMediaVaultService.stream.getBlob('<path>')
 .success(function (data) {
     // perform success action here
@@ -146,7 +146,7 @@ baasicMediaVaultService.stream.getBlob('<path>')
 .error(function (response, status, headers, config) {
     // perform error handling here
 });
-// Request derived media vault blob   
+// Request derived blob   
 baasicMediaVaultService.stream.getBlob({id: '<path>', width: <width>, height: <height>})
 .success(function (data) {
     // perform success action here
@@ -172,8 +172,8 @@ baasicMediaVaultService.stream.getBlob({id: '<path>', width: <width>, height: <h
                      * Returns a promise that is resolved once the update media vault stream action has been performed; this action will replace the existing stream with a new one. Alternatively, if a derived stream is being updated it will either create a new derived stream or replace the existing one. In order to update a derived stream, format needs to be passed (For example: `width` and `height` for the image type of media vault stream data type).
                      * @method streams.update
                      * @example
-// Update existing original media vault  stream
-baasicMediaVaultService.streams.update('<path>', <file-stream>)
+// Update existing original media vault stream
+baasicMediaVaultService.streams.update('<path>', <media-vault-stream>)
 .success(function (data) {
   // perform success action here
 })
@@ -181,7 +181,7 @@ baasicMediaVaultService.streams.update('<path>', <file-stream>)
   // perform error handling here
 });
 // Update derived media vault stream
-baasicMediaVaultService.streams.update({id: '<path>', width: <width>, height: <height>}, <file-stream>)
+baasicMediaVaultService.streams.update({id: '<path>', width: <width>, height: <height>}, <media-vault-stream>)
 .success(function (data) {
   // perform success action here
 })
@@ -209,10 +209,10 @@ baasicMediaVaultService.streams.update({id: '<path>', width: <width>, height: <h
                     },
 
                      /**
-                     * Returns a promise that is resolved once the create media vault stream action has been performed; this action will upload the specified media vault stream.
+                     * Returns a promise that is resolved once the create media vault stream action has been performed; this action will upload the specified blob. For more information on Blob objects please see [Blob Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
                      * @method streams.create
                      * @example 
-baasicMediaVaultService.streams.update('<path>', <media-vault-stream>)
+baasicMediaVaultService.streams.create('<path>', <blob>)
 .success(function (data) {
   // perform success action here
 })
