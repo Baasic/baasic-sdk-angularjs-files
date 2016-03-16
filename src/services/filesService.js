@@ -245,7 +245,7 @@ baasicFilesService.streams.create('<path>', <blob>)
                   * @method batch.remove       
                   * @example
 // Remove original file resources                
-baasicFilesService.batch.remove([{ id: <file-id> }])
+baasicFilesService.batch.remove([{ id: '<file-id>' }])
 .success(function (data) {
   // perform success action here
 })
@@ -253,7 +253,7 @@ baasicFilesService.batch.remove([{ id: <file-id> }])
   // perform error handling here
 });		
 // Remove derived file resources  
-baasicFilesService.batch.remove([{ id: <file-id>, fileFormat: { width: <width>, height: <height> } }])
+baasicFilesService.batch.remove([{ id: '<file-id>', fileFormat: { width: <width>, height: <height> } }])
 .success(function (data) {
   // perform success action here
 })
@@ -324,7 +324,7 @@ baasicFilesService.acl.get({id: '<file-id>'})
                     * @example 
 var options = {id : '<file-id>'};
 var aclObj =  {
- actionId: '<action-id'>,
+ actionId: '<action-id>',
  roleId: '<role-id>',
  userId: '<user-id>'
 };

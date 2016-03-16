@@ -246,7 +246,7 @@ baasicMediaVaultService.streams.create('<path>', <blob>)
                   * @method batch.remove       
                   * @example
 // Remove original media vault resources		 
-baasicMediaVaultService.batch.remove([{ id: <media-vault-id> }])
+baasicMediaVaultService.batch.remove([{ id: '<media-vault-id>' }])
 .success(function (data) {
   // perform success action here
 })
@@ -254,7 +254,7 @@ baasicMediaVaultService.batch.remove([{ id: <media-vault-id> }])
   // perform error handling here
 });	
 // Remove derived media vault resources		 
-baasicMediaVaultService.batch.remove([{ id: <media-vault-id>, fileFormat: { width: <width>, height: <height> } }])
+baasicMediaVaultService.batch.remove([{ id: '<media-vault-id>', fileFormat: { width: <width>, height: <height> } }])
 .success(function (data) {
   // perform success action here
 })

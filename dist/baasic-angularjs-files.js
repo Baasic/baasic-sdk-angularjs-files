@@ -436,7 +436,7 @@
                      * @method batch.remove       
                      * @example
                      // Remove original file resources
-                     baasicFilesService.batch.remove([{ id: <file-id> }])
+                     baasicFilesService.batch.remove([{ id: '<file-id>' }])
                      .success(function (data) {
                      // perform success action here
                      })
@@ -444,7 +444,7 @@
                      // perform error handling here
                      });
                      // Remove derived file resources
-                     baasicFilesService.batch.remove([{ id: <file-id>, fileFormat: { width: <width>, height: <height> } }])
+                     baasicFilesService.batch.remove([{ id: '<file-id>', fileFormat: { width: <width>, height: <height> } }])
                      .success(function (data) {
                      // perform success action here
                      })
@@ -515,7 +515,7 @@
                      * @example 
                      var options = {id : '<file-id>'};
                      var aclObj =  {
-                     actionId: '<action-id'>,
+                     actionId: '<action-id>',
                      roleId: '<role-id>',
                      userId: '<user-id>'
                      };
@@ -978,7 +978,7 @@
                      * @method batch.remove       
                      * @example
                      // Remove original media vault resources
-                     baasicMediaVaultService.batch.remove([{ id: <media-vault-id> }])
+                     baasicMediaVaultService.batch.remove([{ id: '<media-vault-id>' }])
                      .success(function (data) {
                      // perform success action here
                      })
@@ -986,7 +986,7 @@
                      // perform error handling here
                      });
                      // Remove derived media vault resources
-                     baasicMediaVaultService.batch.remove([{ id: <media-vault-id>, fileFormat: { width: <width>, height: <height> } }])
+                     baasicMediaVaultService.batch.remove([{ id: '<media-vault-id>', fileFormat: { width: <width>, height: <height> } }])
                      .success(function (data) {
                      // perform success action here
                      })
