@@ -199,7 +199,7 @@ baasicFilesService.streams.update({id: '<path>', width: <width>, height: <height
                         return baasicApiHttp({
                             transformRequest: angular.identity,
                             url:  filesRouteService.streams.update.expand(data),
-                            method: 'POST',
+                            method: 'PUT',
                             data: formData,
                             headers: {
                                 'Content-Type': undefined

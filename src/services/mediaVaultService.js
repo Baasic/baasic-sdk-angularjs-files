@@ -200,7 +200,7 @@ baasicMediaVaultService.streams.update({id: '<path>', width: <width>, height: <h
                         return baasicApiHttp({
                             transformRequest: angular.identity,
                             url:  mediaVaultRouteService.streams.update.expand(data),
-                            method: 'POST',
+                            method: 'PUT',
                             data: formData,
                             headers: {
                                 'Content-Type': undefined

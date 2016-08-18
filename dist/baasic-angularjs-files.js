@@ -390,7 +390,7 @@
                         return baasicApiHttp({
                             transformRequest: angular.identity,
                             url: filesRouteService.streams.update.expand(data),
-                            method: 'POST',
+                            method: 'PUT',
                             data: formData,
                             headers: {
                                 'Content-Type': undefined
@@ -932,7 +932,7 @@
                         return baasicApiHttp({
                             transformRequest: angular.identity,
                             url: mediaVaultRouteService.streams.update.expand(data),
-                            method: 'POST',
+                            method: 'PUT',
                             data: formData,
                             headers: {
                                 'Content-Type': undefined
