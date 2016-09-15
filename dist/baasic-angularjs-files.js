@@ -57,6 +57,13 @@
                  **/
                 get: uriTemplateService.parse('files/{id}/{?embed,fields}'),
 
+                /**
+                 * Parses link route; this URI template does not expose any additional options.
+                 * @method        
+                 * @example baasicFilesRouteService.link.expand({});              
+                 **/
+                link: uriTemplateService.parse('files/link'),
+
                 streams: {
                     /**
                      * Parses get route; this route should be expanded with id or path of desired file stream. Additional supported items are:
@@ -81,7 +88,7 @@
                     create: uriTemplateService.parse('file-streams/{path}'),
 
                     /**
-                     * Parses create route; this route should be expanded with the id or path of the previously saved resource. Additional supported items are:
+                     * Parses update route; this route should be expanded with the id or path of the previously saved resource. Additional supported items are:
                      * - `width` - width of derived image to update.
                      * - `height` - height of derived image to update.                    
                      * @method streams.update    
@@ -96,11 +103,11 @@
 
                 batch: {
                     /**
-                     * Parses remove route; this URI template does not expose any additional options.                                    
-                     * @method batch.remove       
-                     * @example baasicFilesRouteService.batch.remove.expand({});              
+                     * Parses unlink route; this URI template does not expose any additional options.                                    
+                     * @method batch.unlink       
+                     * @example baasicFilesRouteService.batch.unlink.expand({});              
                      **/
-                    remove: uriTemplateService.parse('files/batch'),
+                    unlink: uriTemplateService.parse('files/batch/unlink'),
 
                     /**
                      * Parses update route; this URI template does not expose any additional options.
@@ -238,10 +245,10 @@
                 },
 
                 /**
-                 * Returns a promise that is resolved once the remove action has been performed. This action will remove one or many file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply baasicFilesRouteService route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                 * Returns a promise that is resolved once the unlink action has been performed. This action will remove one or many file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply baasicFilesRouteService route template. Here is an example of how a route can be obtained from HAL enabled objects:
                  ```
                  var params = baasicApiService.removeParams(fileEntry);
-                 var uri = params['model'].links('delete').href;
+                 var uri = params['model'].links('unlink').href;
                  ```
                  * @method        
                  * @example 
@@ -263,18 +270,47 @@
                  });
                  **/
                 remove: function (data, options) {
+                    return this.unlink(data, options);
+                },
+
+                /**
+                 * Returns a promise that is resolved once the unlink action has been performed. This action will remove one or many file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply baasicFilesRouteService route template. Here is an example of how a route can be obtained from HAL enabled objects:
+                 ```
+                 var params = baasicApiService.removeParams(fileEntry);
+                 var uri = params['model'].links('unlink').href;
+                 ```
+                 * @method        
+                 * @example 
+                 // fileEntry is a file resource previously fetched using get action. The following action will remove the original file resource and all accompanying derived file resources.
+                 baasicFilesRouteService.remove(fileEntry)
+                 .success(function (data) {
+                 // perform success action here
+                 })
+                 .error(function (response, status, headers, config) {
+                 // perform error handling here
+                 });
+                 // fileEntry is a file resource previously fetched using get action. The following action will remove derived file resource only.
+                 baasicFilesRouteService.remove(fileEntry, {width: <width>, height: <height>})
+                 .success(function (data) {
+                 // perform success action here
+                 })
+                 .error(function (response, status, headers, config) {
+                 // perform error handling here
+                 });
+                 **/
+                unlink: function (data, options) {
                     if (!options) {
                         options = {};
                     }
                     var params = baasicApiService.removeParams(data);
-                    var href = filesRouteService.parse(params[baasicConstants.modelPropertyName].links('delete').href + '{?height,width}').expand(options);
+                    var href = filesRouteService.parse(params[baasicConstants.modelPropertyName].links('unlink').href + '{?height,width}').expand(options);
                     return baasicApiHttp.delete(href);
                 },
 
                 /**
                  * Returns a promise that is resolved once the update file action has been performed; this action will update a file resource if successfully completed. This route uses HAL enabled objects to obtain routes and therefore it doesn't apply `baasicFilesRouteService` route template. Here is an example of how a route can be obtained from HAL enabled objects:
                  ```
-                 var params = baasicApiService.removeParams(fileEntry);
+                 var params = baasicApiService.updateParams(fileEntry);
                  var uri = params['model'].links('put').href;
                  ```
                  * @method        
@@ -293,6 +329,23 @@
                     var params = baasicApiService.updateParams(data);
                     return baasicApiHttp.put(params[baasicConstants.modelPropertyName].links('put').href, params[baasicConstants.modelPropertyName]);
                 },
+
+                /**
+                 * Returns a promise that is resolved once the link action has been performed; this action links file resource from other modules into the Files module (For example: file resources from the Media Vault module can be linked directly into the Files module).
+                 * @method        
+                 * @example 
+                 baasicFilesService.link(fileObject)
+                 .success(function (data) {
+                 // perform success action here
+                 })
+                 .error(function (response, status, headers, config) {
+                 // perform error handling here
+                 });
+                 **/
+                link: function (data) {
+                    return baasicApiHttp.post(filesRouteService.link.expand(), baasicApiService.createParams(data)[baasicConstants.modelPropertyName]);
+                },
+
                 streams: {
                     /**
                      * Returns a promise that is resolved once the get action has been performed. Success response returns the file stream if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will return a stream of the derived resource. Otherwise, stream of the original file resource will be retrieved.
@@ -432,7 +485,7 @@
 
                 batch: {
                     /**
-                     * Returns a promise that is resolved once the remove action has been performed. This action will remove file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system.
+                     * Returns a promise that is resolved once the unlink action has been performed. This action will remove file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system.
                      * @method batch.remove       
                      * @example
                      // Remove original file resources
@@ -453,8 +506,33 @@
                      });
                      **/
                     remove: function (data) {
+                        return this.batch.unlink(data);
+                    },
+
+                    /**
+                     * Returns a promise that is resolved once the unlink action has been performed. This action will remove file resources from the system if successfully completed. If derived resource's format is passed, such as `width` and `height` for the image type of file resource, the operation will remove just derived resource. Otherwise, specified file and all its accompanying derived resources will be removed from the system.
+                     * @method batch.unlink       
+                     * @example
+                     // Remove original file resources
+                     baasicFilesService.batch.unlink([{ id: '<file-id>' }])
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     // Remove derived file resources
+                     baasicFilesService.batch.unlink([{ id: '<file-id>', fileFormat: { width: <width>, height: <height> } }])
+                     .success(function (data) {
+                     // perform success action here
+                     })
+                     .error(function (response, status, headers, config) {
+                     // perform error handling here
+                     });
+                     **/
+                    unlink: function (data) {
                         return baasicApiHttp({
-                            url: filesRouteService.batch.remove.expand({}),
+                            url: filesRouteService.batch.unlink.expand({}),
                             method: 'DELETE',
                             data: data
                         });
@@ -640,7 +718,7 @@
                     create: uriTemplateService.parse('media-vault-streams/{path}'),
 
                     /**
-                     * Parses create route; this route should be expanded with the id or path of the previously saved media vault resource. Additional supported items are:
+                     * Parses update route; this route should be expanded with the id or path of the previously saved media vault resource. Additional supported items are:
                      * - `width` - width of desired derived image.
                      * - `height` - height of desired derived image.                     
                      * @method streams.update

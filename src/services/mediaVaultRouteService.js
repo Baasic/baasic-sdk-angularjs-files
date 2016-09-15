@@ -57,7 +57,7 @@ baasicMediaVaultRouteService.streams.create.expand(
                     create: uriTemplateService.parse('media-vault-streams/{path}'),
                     
                     /**
-                    * Parses create route; this route should be expanded with the id or path of the previously saved media vault resource. Additional supported items are:
+                    * Parses update route; this route should be expanded with the id or path of the previously saved media vault resource. Additional supported items are:
                     * - `width` - width of desired derived image.
                     * - `height` - height of desired derived image.                     
                     * @method streams.update

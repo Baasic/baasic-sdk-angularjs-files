@@ -31,7 +31,14 @@ baasicFilesRouteService.get.expand(
     {id: '<file-id>'}
 );               
                 **/ 			
-                get: uriTemplateService.parse('files/{id}/{?embed,fields}'),                    
+                get: uriTemplateService.parse('files/{id}/{?embed,fields}'),             
+                
+                /**
+                * Parses link route; this URI template does not expose any additional options.
+                * @method        
+                * @example baasicFilesRouteService.link.expand({});              
+                **/  			                
+                link: uriTemplateService.parse('files/link'),       
                 
                 streams: {
                     /**
@@ -57,7 +64,7 @@ baasicFilesRouteService.streams.create.expand(
                     create: uriTemplateService.parse('file-streams/{path}'),
                     
                     /**
-                    * Parses create route; this route should be expanded with the id or path of the previously saved resource. Additional supported items are:
+                    * Parses update route; this route should be expanded with the id or path of the previously saved resource. Additional supported items are:
                     * - `width` - width of derived image to update.
                     * - `height` - height of derived image to update.                    
                     * @method streams.update    
@@ -72,11 +79,11 @@ baasicFilesRouteService.streams.update.expand(
 
                 batch: {
                     /**
-                    * Parses remove route; this URI template does not expose any additional options.                                    
-                    * @method batch.remove       
-                    * @example baasicFilesRouteService.batch.remove.expand({});              
+                    * Parses unlink route; this URI template does not expose any additional options.                                    
+                    * @method batch.unlink       
+                    * @example baasicFilesRouteService.batch.unlink.expand({});              
                     **/                      
-                    remove: uriTemplateService.parse('files/batch'), 
+                    unlink: uriTemplateService.parse('files/batch/unlink'),                                       
                     
                     /**
                     * Parses update route; this URI template does not expose any additional options.
