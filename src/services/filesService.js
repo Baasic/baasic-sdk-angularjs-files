@@ -426,7 +426,7 @@ baasicFilesService.acl.removeByUser('<file-id>', '<access-action>', '<username>'
 				    **/						
                     removeByUser: function (fileEntryId, action, user, data) {
                         var params = baasicApiService.removeParams(data);
-                        params.fileEntryId = fileEntryId;
+                        params.id = fileEntryId;
                         params.user = user;
                         params.accessAction = action;
                         return baasicApiHttp.delete(filesRouteService.acl.deleteByUser.expand(params));
@@ -445,7 +445,7 @@ baasicFilesService.acl.removeByRole('<file-id>', '<access-action>', '<role-name>
 				    **/						
                     removeByRole: function (fileEntryId, action, role, data) {
                         var params = baasicApiService.removeParams(data);
-                        params.fileEntryId = fileEntryId;
+                        params.id = fileEntryId;
                         params.role = role;
                         params.accessAction = action;
                         return baasicApiHttp.delete(filesRouteService.acl.deleteByRole.expand(params));
