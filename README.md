@@ -1,6 +1,6 @@
 # Baasic Files AngularJS SDK
 
-Baasic AngularJS Files library provides access to [Baasic REST API](https://api.baasic.com/beta) files end-points.
+Baasic AngularJS Files library provides access to [Baasic REST API](http://dev.baasic.com/api/reference/home) files end-points.
 
 ## Dependencies
 

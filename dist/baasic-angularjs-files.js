@@ -1,6 +1,6 @@
 /*
- Baasic AngularJS Files v0.9.0
- (c) 2014-2016 Mono http://baasic.com
+ Baasic AngularJS Files v1.0.0
+ (c) 2014-2017 Mono Ltd. http://baasic.com
  License: MIT
 */
 (function (angular, undefined) { /* exported module */
@@ -197,7 +197,7 @@
     /**
      * @overview 
      ***Notes:**
-     - Refer to the [REST API documentation](https://github.com/Baasic/baasic-rest-api/wiki) for detailed information about available Baasic REST API end-points.
+     - Refer to the [REST API documentation](http://dev.baasic.com/api/reference/home) for detailed information about available Baasic REST API end-points.
      - [URI Template](https://github.com/Baasic/uritemplate-js) syntax enables expanding the Baasic route templates to Baasic REST URIs providing it with an object that contains URI parameters.
      - All end-point objects are transformed by the associated route service.
      */
@@ -511,7 +511,7 @@
                      });
                      **/
                     remove: function (data) {
-                        return this.batch.unlink(data);
+                        return this.unlink(data);
                     },
 
                     /**
@@ -661,7 +661,7 @@
     /**
      * @overview 
      ***Notes:**
-     - Refer to the [REST API documentation](https://github.com/Baasic/baasic-rest-api/wiki) for detailed information about available Baasic REST API end-points.
+     - Refer to the [REST API documentation](http://dev.baasic.com/api/reference/home) for detailed information about available Baasic REST API end-points.
      - All end-point objects are transformed by the associated route service.
      */
 
@@ -809,7 +809,7 @@
     /**
      * @overview 
      ***Notes:**
-     - Refer to the [REST API documentation](https://github.com/Baasic/baasic-rest-api/wiki) for detailed information about available Baasic REST API end-points.
+     - Refer to the [REST API documentation](http://dev.baasic.com/api/reference/home) for detailed information about available Baasic REST API end-points.
      - [URI Template](https://github.com/Baasic/uritemplate-js) syntax enables expanding the Baasic route templates to Baasic REST URIs providing it with an object that contains URI parameters.
      - All end-point objects are transformed by the associated route service.
      */
@@ -1204,7 +1204,7 @@
     /**
      * @overview 
      ***Notes:**
-     - Refer to the [REST API documentation](https://github.com/Baasic/baasic-rest-api/wiki) for detailed information about available Baasic REST API end-points.
+     - Refer to the [REST API documentation](http://dev.baasic.com/api/reference/home) for detailed information about available Baasic REST API end-points.
      - All end-point objects are transformed by the associated route service.
      */
 
